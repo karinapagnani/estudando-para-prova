@@ -1,0 +1,1607 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Revisão m1 — S.O. & Redes</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0c10;
+    --surface: #111318;
+    --surface2: #181c24;
+    --border: #1e2430;
+    --accent: #00e5ff;
+    --accent2: #7c3aed;
+    --accent3: #f59e0b;
+    --accent4: #10b981;
+    --text: #e2e8f0;
+    --text-dim: #64748b;
+    --text-muted: #94a3b8;
+    --glow: 0 0 20px rgba(0,229,255,0.15);
+    --red: #ef4444;
+  }
+ 
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+ 
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+ 
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,229,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,229,255,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+ 
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(10,12,16,0.92);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+  }
+ 
+  .logo {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+ 
+  .logo span { color: var(--text-dim); }
+ 
+  .progress-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+  }
+ 
+  .progress-bar {
+    width: 120px;
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+ 
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    border-radius: 2px;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+ 
+  .hero {
+    position: relative;
+    z-index: 1;
+    padding: 60px 24px 40px;
+    text-align: center;
+  }
+ 
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(0,229,255,0.07);
+    border: 1px solid rgba(0,229,255,0.2);
+    border-radius: 100px;
+    padding: 4px 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    margin-bottom: 24px;
+    letter-spacing: 0.05em;
+  }
+ 
+  .hero-badge::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: blink 1.2s ease infinite;
+  }
+ 
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+ 
+  h1 {
+    font-size: clamp(32px, 6vw, 64px);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    background: linear-gradient(135deg, #fff 0%, var(--accent) 60%, var(--accent2) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 12px;
+  }
+ 
+  .hero-sub {
+    color: var(--text-muted);
+    font-size: 15px;
+    margin-bottom: 40px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+ 
+  .nav-pills {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    padding: 0 24px 48px;
+    position: relative;
+    z-index: 1;
+  }
+ 
+  .pill {
+    padding: 6px 14px;
+    border-radius: 100px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text-muted);
+    font-size: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+ 
+  .pill:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(0,229,255,0.05);
+  }
+ 
+  main {
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+    display: flex;
+    flex-direction: column;
+    gap: 64px;
+  }
+ 
+  .section-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+ 
+  .section-label .tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    background: rgba(0,229,255,0.07);
+    border: 1px solid rgba(0,229,255,0.18);
+    border-radius: 4px;
+    padding: 2px 8px;
+    text-transform: uppercase;
+  }
+ 
+  .section-label .tag.purple { color: #a78bfa; background: rgba(124,58,237,0.07); border-color: rgba(124,58,237,0.2); }
+  .section-label .tag.amber { color: var(--accent3); background: rgba(245,158,11,0.07); border-color: rgba(245,158,11,0.2); }
+  .section-label .tag.green { color: var(--accent4); background: rgba(16,185,129,0.07); border-color: rgba(16,185,129,0.2); }
+  .section-label .tag.red { color: var(--red); background: rgba(239,68,68,0.07); border-color: rgba(239,68,68,0.2); }
+ 
+  .section-label h2 {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+ 
+  .section-label .line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--border), transparent);
+  }
+ 
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+  }
+ 
+  .card-grid.wide {
+    grid-template-columns: repeat(auto-fill, minmax(480px, 1fr));
+  }
+ 
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 22px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+  }
+ 
+  .card:hover {
+    border-color: rgba(0,229,255,0.3);
+    transform: translateY(-2px);
+    box-shadow: var(--glow);
+  }
+ 
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+ 
+  .card:hover::before { opacity: 1; }
+ 
+  .card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 14px;
+    gap: 12px;
+  }
+ 
+  .card-icon {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+ 
+  .icon-cyan { background: rgba(0,229,255,0.1); }
+  .icon-purple { background: rgba(124,58,237,0.12); }
+  .icon-amber { background: rgba(245,158,11,0.1); }
+  .icon-green { background: rgba(16,185,129,0.1); }
+  .icon-red { background: rgba(239,68,68,0.1); }
+  .icon-pink { background: rgba(236,72,153,0.1); }
+ 
+  .card h3 {
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    flex: 1;
+  }
+ 
+  .card .keyword {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: var(--accent);
+    background: rgba(0,229,255,0.07);
+    border: 1px solid rgba(0,229,255,0.15);
+    border-radius: 4px;
+    padding: 2px 6px;
+    white-space: nowrap;
+  }
+ 
+  .card p {
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--text-muted);
+  }
+ 
+  .card .detail {
+    margin-top: 12px;
+    display: none;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+    font-size: 12px;
+    line-height: 1.7;
+    color: var(--text-dim);
+  }
+ 
+  .card.expanded .detail { display: block; }
+ 
+  .card .expand-btn {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text-dim);
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+    transition: color 0.2s;
+  }
+ 
+  .card:hover .expand-btn { color: var(--accent); }
+ 
+  .arrow {
+    transition: transform 0.2s;
+    display: inline-block;
+  }
+ 
+  .card.expanded .arrow { transform: rotate(90deg); }
+ 
+  pre {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: #a5f3fc;
+    overflow-x: auto;
+    margin-top: 10px;
+    line-height: 1.6;
+  }
+ 
+  pre .comment { color: var(--text-dim); }
+  pre .keyword { color: #c084fc; }
+  pre .string { color: #86efac; }
+ 
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin-top: 8px;
+  }
+ 
+  .compare-table th {
+    background: var(--surface2);
+    color: var(--accent);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    letter-spacing: 0.05em;
+  }
+ 
+  .compare-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid rgba(30,36,48,0.5);
+    color: var(--text-muted);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+ 
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table td:first-child { color: var(--text); font-weight: 700; }
+ 
+  .highlight-box {
+    background: rgba(0,229,255,0.04);
+    border: 1px solid rgba(0,229,255,0.15);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    padding: 14px 16px;
+    margin-top: 10px;
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.7;
+  }
+ 
+  .highlight-box.amber {
+    background: rgba(245,158,11,0.04);
+    border-color: rgba(245,158,11,0.15);
+    border-left-color: var(--accent3);
+  }
+ 
+  .highlight-box.green {
+    background: rgba(16,185,129,0.04);
+    border-color: rgba(16,185,129,0.15);
+    border-left-color: var(--accent4);
+  }
+ 
+  .highlight-box.purple {
+    background: rgba(124,58,237,0.04);
+    border-color: rgba(124,58,237,0.15);
+    border-left-color: var(--accent2);
+  }
+ 
+  .highlight-box strong { color: var(--text); }
+ 
+  .diagram {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    white-space: pre;
+    overflow-x: auto;
+    line-height: 1.8;
+  }
+ 
+  .quiz-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 22px;
+  }
+ 
+  .quiz-card h3 {
+    font-size: 14px;
+    color: var(--text);
+    margin-bottom: 16px;
+    line-height: 1.5;
+  }
+ 
+  .quiz-card .quiz-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--accent3);
+    margin-bottom: 8px;
+    letter-spacing: 0.1em;
+  }
+ 
+  .quiz-options {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+ 
+  .quiz-opt {
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    color: var(--text-muted);
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-align: left;
+  }
+ 
+  .quiz-opt:hover:not(.disabled) {
+    border-color: var(--accent);
+    color: var(--text);
+  }
+ 
+  .quiz-opt.correct {
+    background: rgba(16,185,129,0.1);
+    border-color: var(--accent4);
+    color: #6ee7b7;
+  }
+ 
+  .quiz-opt.wrong {
+    background: rgba(239,68,68,0.08);
+    border-color: var(--red);
+    color: #fca5a5;
+  }
+ 
+  .quiz-opt.disabled { cursor: default; }
+ 
+  .quiz-feedback {
+    margin-top: 12px;
+    font-size: 12px;
+    line-height: 1.6;
+    padding: 10px 12px;
+    border-radius: 8px;
+    display: none;
+  }
+ 
+  .quiz-feedback.show { display: block; }
+  .quiz-feedback.ok { background: rgba(16,185,129,0.08); color: #6ee7b7; }
+  .quiz-feedback.err { background: rgba(239,68,68,0.08); color: #fca5a5; }
+ 
+  .score-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-top: 16px;
+  }
+ 
+  .score-val {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--accent);
+  }
+ 
+  .duplex-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+  }
+ 
+  .duplex-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+ 
+  .duplex-card h4 {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+ 
+  .duplex-card p {
+    font-size: 11px;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+ 
+  .arrow-anim {
+    font-size: 22px;
+    margin: 10px 0;
+    display: block;
+  }
+ 
+  .process-queue {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+  }
+ 
+  .process-box {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 8px 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+  }
+ 
+  .process-box span { font-size: 9px; color: var(--text-dim); }
+ 
+  .process-box.active {
+    border-color: var(--accent);
+    background: rgba(0,229,255,0.07);
+    color: var(--accent);
+  }
+ 
+  /* CHIP */
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 10px;
+  }
+ 
+  .chip {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    padding: 3px 9px;
+    border-radius: 4px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+  }
+ 
+  /* MEMORY MAP */
+  .mem-map {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-top: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+  }
+ 
+  .mem-row {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+ 
+  .mem-addr {
+    width: 64px;
+    padding: 5px 8px;
+    color: var(--text-dim);
+    font-size: 9px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-right: none;
+    border-radius: 4px 0 0 4px;
+  }
+ 
+  .mem-label {
+    flex: 1;
+    padding: 5px 10px;
+    border: 1px solid var(--border);
+    border-radius: 0 4px 4px 0;
+  }
+ 
+  .mem-os { background: rgba(124,58,237,0.1); color: #c4b5fd; }
+  .mem-proc { background: rgba(0,229,255,0.07); color: #7dd3fc; }
+  .mem-swap { background: rgba(245,158,11,0.07); color: #fcd34d; }
+  .mem-free { background: var(--surface2); color: var(--text-dim); }
+ 
+  footer {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 32px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    border-top: 1px solid var(--border);
+  }
+ 
+  footer strong { color: var(--accent); }
+ 
+  .fade-in {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+ 
+  @media (max-width: 700px) {
+    .card-grid.wide { grid-template-columns: 1fr; }
+    .duplex-row { grid-template-columns: 1fr; }
+    h1 { font-size: 32px; }
+  }
+</style>
+</head>
+<body>
+ 
+<header>
+  <div class="logo">⟨/ <span>revisao</span>.m1 &gt;</div>
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="pgbar"></div></div>
+    <span id="pglabel">0% lido</span>
+  </div>
+</header>
+ 
+<section class="hero">
+  <div class="hero-badge">Eng. de Software — 1° Semestre — 2026</div>
+  <h1>Revisão M1<br>S.O. &amp; Redes</h1>
+  <p class="hero-sub"> como o prof disse: <br> foco em entender o funcionamento, não só decorar definições</p>
+</section>
+ 
+<div class="nav-pills">
+  <a class="pill" href="#hardware">Hardware</a>
+  <a class="pill" href="#so">Sistemas Operacionais</a>
+  <a class="pill" href="#memoria">Memória</a>
+  <a class="pill" href="#escalonamento">Escalonamento</a>
+  <a class="pill" href="#redes">Redes</a>
+  <a class="pill" href="#quiz">Quiz Rápido</a>
+</div>
+ 
+<main>
+ 
+  <!-- ════════════ HARDWARE ════════════ -->
+  <section id="hardware" class="fade-in">
+    <div class="section-label">
+      <div class="tag amber">01</div>
+      <h2>Hardware Essencial</h2>
+      <div class="line"></div>
+    </div>
+ 
+    <div class="card-grid">
+ 
+      <div class="card" onclick="toggleCard(this)">
+        <div class="card-header">
+          <div class="card-icon icon-amber">⚡</div>
+          <h3>CPU — Unidade Central de Processamento</h3>
+          <span class="keyword">HARDWARE</span>
+        </div>
+        <p>O "cérebro" do computador. Executa instruções de programas buscando-as na memória, decodificando e executando em ciclos contínuos (busca → decodifica → executa).</p>
+        <div class="detail">
+          <strong style="color:var(--accent)">Componentes internos:</strong>
+          <div class="chips">
+            <span class="chip">ULA — cálculos</span>
+            <span class="chip">Registradores — armazenamento rápido</span>
+            <span class="chip">Unidade de Controle — orquestra tudo</span>
+            <span class="chip">Cache L1/L2/L3</span>
+            <span class="chip">Barramento interno</span>
+          </div>
+          <div class="highlight-box amber" style="margin-top:12px">
+            <strong>Ciclo de instrução:</strong> Fetch (busca na RAM) → Decode (interpreta opcode) → Execute (ULA ou memória) → Write-back (salva resultado)
+          </div>
+          <div class="highlight-box" style="margin-top:8px">
+            <strong>Dica de prova:</strong> A velocidade da CPU é medida em GHz (bilhões de ciclos/seg). Mais núcleos = mais processos em paralelo.
+          </div>
+        </div>
+        <button class="expand-btn"><span class="arrow">▶</span> ver mais</button>
+      </div>
+ 
+      <div class="card" onclick="toggleCard(this)">
+        <div class="card-header">
+          <div class="card-icon icon-purple">🧮</div>
+          <h3>ULA — Unidade Lógica e Aritmética</h3>
+          <span class="keyword">HARDWARE</span>
+        </div>
+        <p>Componente da CPU responsável por realizar <strong style="color:var(--text)">todas</strong> as operações matemáticas (soma, subtração, etc.) e lógicas (AND, OR, NOT, comparações).</p>
+        <div class="detail">
+          <table class="compare-table">
+            <tr><th>Tipo de operação</th><th>Exemplos</th></tr>
+            <tr><td>Aritméticas</td><td>+, -, ×, ÷, módulo</td></tr>
+            <tr><td>Lógicas</td><td>AND, OR, NOT, XOR</td></tr>
+            <tr><td>Comparação</td><td>&gt;, &lt;, ==, !=</td></tr>
+            <tr><td>Deslocamento de bits</td><td>shift left, shift right</td></tr>
+          </table>
+          <div class="highlight-box" style="margin-top:10px">
+            A ULA recebe operandos dos <strong>registradores</strong> e devolve o resultado para um registrador de destino. Ela não lê memória diretamente.
+          </div>
+        </div>
+        <button class="expand-btn"><span class="arrow">▶</span> ver mais</button>
+      </div>
+ 
+      <div class="card" onclick="toggleCard(this)">
+        <div class="card-header">
+          <div class="card-icon icon-cyan">📌</div>
+          <h3>Registradores</h3>
+          <span class="keyword">CPU</span>
+        </div>
+        <p>Memória <em style="color:var(--text)">ultra-rápida</em> dentro da CPU. Armazenam temporariamente os dados que estão sendo processados <strong style="color:var(--text)">agora mesmo</strong>. São os mais rápidos, mas os de menor capacidade.</p>
+        <div class="detail">
+          <table class="compare-table">
+            <tr><th>Registrador</th><th>Função</th></tr>
+            <tr><td>PC (Program Counter)</td><td>Guarda o endereço da próxima instrução</td></tr>
+            <tr><td>IR (Instruction Register)</td><td>Instrução atualmente em execução</td></tr>
+            <tr><td>SP (Stack Pointer)</td><td>Topo da pilha de chamadas</td></tr>
+            <tr><td>ACC (Acumulador)</td><td>Resultado temporário de operações</td></tr>
+            <tr><td>MAR / MDR</td><td>Endereço/dado a ser lido ou escrito na RAM</td></tr>
+          </table>
+          <div class="highlight-box amber" style="margin-top:10px">
+            <strong>Hierarquia de velocidade:</strong> Registradores &gt; Cache L1 &gt; Cache L2 &gt; RAM &gt; HD/SSD
+          </div>
+        </div>
+        <button class="expand-btn"><span class="arrow">▶</span> ver mais</button>
+      </div>
+ 
+      <div class="card" onclick="toggleCard(this)">
+        <div class="card-header">
+          <div class="card-icon icon-green">💾</div>
+          <h3>RAM — Memória de Acesso Aleatório</h3>
+          <span class="keyword">MEMÓRIA</span>
+        </div>
+        <p>Memória principal do sistema. <strong style="color:var(--text)">Volátil</strong> — perde tudo quando desligado. Armazena programas e dados <em style="color:var(--text)">em uso</em>. A CPU acessa a RAM constantemente durante a execução.</p>
+        <div class="detail">
+          <div class="highlight-box green">
+            <strong>Analogia:</strong> Se o HD é a estante de livros, a RAM é a mesa de trabalho. Você só consegue trabalhar com o que está na mesa. Mesa maior = mais programas abertos ao mesmo tempo.
+          </div>
+          <div class="highlight-box" style="margin-top:8px">
+            <strong>RAM vs Cache vs HD:</strong><br>
+            RAM: rápida, volátil, cara por GB<br>
+            Cache: rapidíssima, dentro da CPU, poucos MB<br>
+            HD/SSD: lenta, persistente, barata, GBs ou TBs
+          </div>
+        </div>
+        <button class="expand-btn"><span class="arrow">▶</span> ver mais</button>
+      </div>
+ 
+      <div class="card" onclick="toggleCard(this)">
+        <div class="card-header">
+          <div class="card-icon icon-amber">🗄️</div>
+          <h3>HD — Disco Rígido (Hard Disk)</h3>
+          <span class="keyword">ARMAZENAMENTO</span>
+        </div>
+        <p>Armazenamento <strong style="color:var(--text)">persistente e não-volátil</strong>. Mantém dados mesmo sem energia. Muito mais lento que a RAM, mas capacidade enorme. Base para o sistema de arquivos e o <strong style="color:var(--text)">Swap</strong>.</p>
+        <div class="detail">
+          <table class="compare-table">
+            <tr><th>Tipo</th><th>Tecnologia</th><th>Velocidade</th></tr>
+            <tr><td>HDD</td><td>Mecânico (discos giratórios)</td><td>~100 MB/s</td></tr>
+            <tr><td>SSD</td><td>Flash (chips)</td><td>~500 MB/s+</td></tr>
+            <tr><td>NVMe SSD</td><td>Flash + PCIe</td><td>~3000 MB/s+</td></tr>
+          </table>
+          <div class="highlight-box amber" style="margin-top:10px">
+            <strong>Papel no SO:</strong> Armazena o SO, programas instalados, arquivos do usuário, e também a <strong>partição de Swap</strong> (memória virtual).
+          </div>
+        </div>
+        <button class="expand-btn"><span class="arrow">▶</span> ver mais</button>
+      </div>
+ 
+      <div class="card" onclick="toggleCard(this)">
+        <div class="card-header">
+          <div class="card-icon icon-red">🎮</div>
+          <h3>Controladoras</h3>
+          <span class="keyword">E/S</span>
+        </div>
+        <p>Chips ou circuitos que <strong style="color:var(--text)">gerenciam a comunicação</strong> entre a CPU e os dispositivos de entrada/saída (teclado, HD, GPU, USB, etc.). Atuam como intermediários inteligentes.</p>
+        <div class="detail">
+          <div class="highlight-box purple">
+            <strong>Como funciona:</strong> A CPU envia um comando à controladora, que gerencia o dispositivo de forma independente. Quando termina, a controladora gera uma <strong>interrupção</strong> avisando a CPU.
+          </div>
+          <div class="chips" style="margin-top:10px">
+            <span class="chip">Controladora de disco (SATA/NVMe)</span>
+            <span class="chip">Controladora USB</span>
+            <span class="chip">Controladora de vídeo (GPU)</span>
+            <span class="chip">Controladora de rede (NIC)</span>
+          </div>
+          <div class="highlight-box amber" style="margin-top:10px">
+            <strong>Sem controladoras</strong>, a CPU teria que gerenciar cada bit transferido para um HD — ficaria ocupada 100% do tempo só com I/O.
+          </div>
+        </div>
+        <button class="expand-btn"><span class="arrow">▶</span> ver mais</button>
+      </div>
+ 
+    </div>
+  </section>
+ 
+  <!-- ════════════ SISTEMAS OPERACIONAIS ════════════ -->
+  <section id="so" class="fade-in">
+    <div class="section-label">
+      <div class="tag purple">02</div>
+      <h2>Sistemas Operacionais</h2>
+      <div class="line"></div>
+    </div>
+ 
+    <div class="card-grid">
+ 
+      <div class="card" onclick="toggleCard(this)">
+        <div class="card-header">
+          <div class="card-icon icon-purple">🏗️</div>
+          <h3>Máquina Multinível</h3>
+          <span class="keyword">ARQUITETURA</span>
+        </div>
+        <p>Computadores funcionam em <strong style="color:var(--text)">camadas de abstração</strong>. Cada nível oferece uma "máquina virtual" para o nível acima, ocultando a complexidade do hardware.</p>
+        <div class="detail">
+          <div class="diagram">Nível 5 — Linguagens de Alto Nível (C, Java, Python)
+Nível 4 — Linguagem Assembly
+Nível 3 — Sistema Operacional (chamadas de sistema)
+Nível 2 — ISA (Instruction Set Architecture)
+Nível 1 — Microarquitetura (lógica de controle)
+Nível 0 — Lógica Digital (portas lógicas, transistores)</div>
+          <div class="highlight-box" style="margin-top:10px">
+            Cada nível só precisa "falar" com o nível imediatamente abaixo. Um programador Python não precisa saber de transistores!
+          </div>
+        </div>
+        <button class="expand-btn"><span class="arrow">▶</span> ver mais</button>
+      </div>
+ 
+      <div class="card" onclick="toggleCard(this)">
+        <div class="card-header">
+          <div class="card-icon icon-amber">📋</div>
+          <h3>JCL — Job Control Language</h3>
+          <span class="keyword">HISTÓRICO</span>
+        </div>
+        <p>Linguagem de controle de tarefas usada em <strong style="color:var(--text)">mainframes IBM</strong>. Usada para descrever jobs (trabalhos em lote) — diz ao SO quais programas executar, quais arquivos usar e quanta memória alocar.</p>
+        <div class="detail">
+          <div class="highlight-box amber">
+            <strong>Contexto histórico:</strong> Era dos sistemas batch (lote). Programadores entregavam cartões perfurados com JCL ao operador, que rodava os jobs durante a madrugada. Resultado vinha horas depois.
+          </div>
+          <pre><span class="comment">// Exemplo JCL simplificado</span>
+<span class="keyword">//MYJOB</span>   JOB  (123),'MEU NOME'
+<span class="keyword">//STEP1</span>   EXEC PGM=MYPROG
+<span class="keyword">//INPUT</span>   DD   DSN=MEU.ARQUIVO,DISP=SHR
+<span class="keyword">//OUTPUT</span>  DD   SYSOUT=*</pre>
+          <div class="highlight-box" style="margin-top:10px">
+            <strong>Na prova:</strong> JCL representa a era dos sistemas <strong>monotarefa/batch</strong>. Um job de cada vez, sem interação do usuário.
+          </div>
+        </div>
+        <button class="expand-btn"><span class="arrow">▶</span> ver mais</button>
+      </div>
+ 
+      <div class="card" onclick="toggleCard(this)">
+        <div class="card-header">
+          <div class="card-icon icon-cyan">🖥️</div>
+          <h3>GUI — Interface Gráfica</h3>
+          <span class="keyword">INTERFACE</span>
+        </div>
+        <p>Interface que usa <strong style="color:var(--text)">elementos visuais</strong> (janelas, ícones, botões, menus) em vez de texto puro. Torna o computador acessível para qualquer pessoa — não só programadores.</p>
+        <div class="detail">
+          <table class="compare-table">
+            <tr><th>CLI (Terminal)</th><th>GUI (Interface Gráfica)</th></tr>
+            <tr><td>Texto puro</td><td>Elementos visuais</td></tr>
+            <tr><td>Mais eficiente para técnicos</td><td>Mais intuitiva para usuários</td></tr>
+            <tr><td>Baixo consumo de recursos</td><td>Requer mais RAM/GPU</td></tr>
+            <tr><td>Ex: bash, cmd</td><td>Ex: Windows, macOS, GNOME</td></tr>
+          </table>
+          <div class="highlight-box" style="margin-top:10px">
+            <strong>Conceito WIMP:</strong> Windows (janelas), Icons (ícones), Menus, Pointer (ponteiro) — os 4 elementos fundamentais de qualquer GUI.
+          </div>
+        </div>
+        <button class="expand-btn"><span class="arrow">▶</span> ver mais</button>
+      </div>
+ 
+      <div class="card" onclick="toggleCard(this)">
+        <div class="card-header">
+          <div class="card-icon icon-red">⚙️</div>
+          <h3>Chamadas de Sistema (System Calls)</h3>
+          <span class="keyword">SO</span>
+        </div>
+        <p>A <strong style="color:var(--text)">interface entre programas e o SO</strong>. Quando um programa precisa usar hardware (ler arquivo, criar processo, alocar memória), ele faz uma chamada de sistema — pedindo permissão ao SO.</p>
+        <div class="detail">
+          <div class="diagram">Programa (modo usuário)
+        │
+        │ system call (ex: read(), fork(), malloc())
+        ▼
+  [ Kernel — modo privilegiado ]
+        │
+        ▼
+   Hardware (disco, CPU, RAM...)</div>
+          <div class="chips" style="margin-top:10px">
+            <span class="chip">open() / close()</span>
+            <span class="chip">read() / write()</span>
+            <span class="chip">fork() — cria processo</span>
+            <span class="chip">exec() — executa programa</span>
+            <span class="chip">exit() — encerra processo</span>
+            <span class="chip">malloc() — aloca memória</span>
+          </div>
+          <div class="highlight-box purple" style="margin-top:10px">
+            <strong>Por que isso existe?</strong> Sem system calls, qualquer programa malicioso poderia acessar diretamente o HD, outros processos, a rede... Caos total!
+          </div>
+        </div>
+        <button class="expand-btn"><span class="arrow">▶</span> ver mais</button>
+      </div>
+ 
+      <div class="card" onclick="toggleCard(this)">
+        <div class="card-header">
+          <div class="card-icon icon-green">🔀</div>
+          <h3>Monotarefa vs Multitarefa</h3>
+          <span class="keyword">TIPOS DE SO</span>
+        </div>
+        <p>Define quantos processos o SO executa simultaneamente. <strong style="color:var(--text)">Monotarefa:</strong> um de cada vez. <strong style="color:var(--text)">Multitarefa:</strong> vários processos "ao mesmo tempo" (na prática, compartilham a CPU).</p>
+        <div class="detail">
+          <table class="compare-table">
+            <tr><th>Monotarefa</th><th>Multitarefa</th></tr>
+            <tr><td>MS-DOS, CP/M</td><td>Windows, Linux, macOS</td></tr>
+            <tr><td>1 processo ativo por vez</td><td>N processos simultâneos</td></tr>
+            <tr><td>Simples, previsível</td><td>Complexo, requer escalonador</td></tr>
+            <tr><td>CPU ociosa durante I/O</td><td>CPU ocupa outro processo enquanto aguarda I/O</td></tr>
+          </table>
+          <div class="highlight-box green" style="margin-top:10px">
+            <strong>Como funciona a multitarefa real?</strong> A CPU alterna entre processos muito rapidamente (milissegundos). Parece simultâneo, mas é <em>concorrente</em>. Com múltiplos núcleos, é de fato paralelo.
+          </div>
+        </div>
+        <button class="expand-btn"><span class="arrow">▶</span> ver mais</button>
+      </div>
+ 
+      <div class="card" onclick="toggleCard(this)">
+        <div class="card-header">
+          <div class="card-icon icon-purple">🔬</div>
+          <h3>Microkernel</h3>
+          <span class="keyword">ARQUITETURA SO</span>
+        </div>
+        <p>Filosofia de design de SO onde o <strong style="color:var(--text)">kernel é mínimo</strong> — só as funções essenciais ficam no núcleo. Todo o resto (drivers, sistema de arquivos, rede) roda em modo usuário como servidores separados.</p>
+        <div class="detail">
+          <table class="compare-table">
+            <tr><th>Monolítico (ex: Linux)</th><th>Microkernel (ex: Minix, QNX)</th></tr>
+            <tr><td>Tudo no kernel</td><td>Kernel mínimo (IPC, scheduler, memória básica)</td></tr>
+            <tr><td>Mais rápido (sem overhead de IPC)</td><td>Mais seguro e estável</td></tr>
+            <tr><td>Bug no driver = kernel crash</td><td>Bug no driver ≠ crash do sistema</td></tr>
+            <tr><td>Difícil de modificar partes</td><td>Fácil trocar componentes</td></tr>
+          </table>
+          <div class="highlight-box purple" style="margin-top:10px">
+            <strong>Exemplo prático:</strong> Se o driver de áudio travar em um microkernel, só o serviço de áudio cai — o SO continua funcionando. No monolítico, pode travar tudo.
+          </div>
+        </div>
+        <button class="expand-btn"><span class="arrow">▶</span> ver mais</button>
+      </div>
+ 
+      <div class="card" onclick="toggleCard(this)">
+        <div class="card-header">
+          <div class="card-icon icon-cyan">🧵</div>
+          <h3>Threads</h3>
+          <span class="keyword">CONCORRÊNCIA</span>
+        </div>
+        <p><strong style="color:var(--text)">Unidade básica de execução</strong> dentro de um processo. Um processo pode ter várias threads que compartilham a mesma memória, mas executam fluxos de código independentes.</p>
+        <div class="detail">
+          <div class="diagram">Processo (espaço de memória compartilhado)
+  ├── Thread 1 → executa função A()
+  ├── Thread 2 → executa função B()
+  └── Thread 3 → aguarda I/O
+  (todas compartilham heap, código, globals)</div>
+          <table class="compare-table" style="margin-top:10px">
+            <tr><th>Processo</th><th>Thread</th></tr>
+            <tr><td>Memória independente</td><td>Compartilha memória do processo</td></tr>
+            <tr><td>Criação lenta (fork)</td><td>Criação rápida</td></tr>
+            <tr><td>Isolado — falha não propaga</td><td>Falha pode matar todas as threads</td></tr>
+            <tr><td>IPC necessário para comunicar</td><td>Comunicação direta (mesma memória)</td></tr>
+          </table>
+          <div class="highlight-box" style="margin-top:10px">
+            <strong>Aplicação prática:</strong> Servidor web cria uma thread por requisição. Navegador usa thread para UI, outra para rede, outra para renderização.
+          </div>
+        </div>
+        <button class="expand-btn"><span class="arrow">▶</span> ver mais</button>
+      </div>
+ 
+    </div>
+  </section>
+ 
+  <!-- ════════════ MEMÓRIA ════════════ -->
+  <section id="memoria" class="fade-in">
+    <div class="section-label">
+      <div class="tag green">03</div>
+      <h2>Gerenciamento de Memória</h2>
+      <div class="line"></div>
+    </div>
+ 
+    <div class="card-grid">
+ 
+      <div class="card" onclick="toggleCard(this)">
+        <div class="card-header">
+          <div class="card-icon icon-green">🗺️</div>
+          <h3>MMU — Memory Management Unit</h3>
+          <span class="keyword">HARDWARE+SO</span>
+        </div>
+        <p>Componente de hardware que <strong style="color:var(--text)">traduz endereços virtuais em físicos</strong>. Permite que cada processo "veja" sua própria memória isolada, mesmo que fisicamente esteja espalhada na RAM.</p>
+        <div class="detail">
+          <div class="diagram">Processo A pensa que está no endereço 0x1000
+         │
+         ▼
+      [ MMU ]  ← tabela de páginas
+         │
+         ▼
+  RAM física: endereço 0x4F200</div>
+          <div class="highlight-box green" style="margin-top:10px">
+            <strong>Benefícios da MMU:</strong><br>
+            • Isolamento entre processos (segurança)<br>
+            • Memória virtual maior que a RAM física<br>
+            • Permite o Swap<br>
+            • Base da proteção de memória do SO
+          </div>
+          <div class="highlight-box amber" style="margin-top:8px">
+            <strong>Sem MMU:</strong> Qualquer processo poderia ler/escrever a memória de outro. Era o caso dos primeiros PCs com MS-DOS.
+          </div>
+        </div>
+        <button class="expand-btn"><span class="arrow">▶</span> ver mais</button>
+      </div>
+ 
+      <div class="card" onclick="toggleCard(this)">
+        <div class="card-header">
+          <div class="card-icon icon-amber">🔄</div>
+          <h3>Swap (Swap In / Swap Out)</h3>
+          <span class="keyword">MEMÓRIA VIRTUAL</span>
+        </div>
+        <p>Mecanismo que usa espaço em <strong style="color:var(--text)">disco como extensão da RAM</strong>. Quando a RAM enche, páginas inativas são movidas ao disco (Swap Out). Quando necessárias, voltam (Swap In).</p>
+        <div class="detail">
+          <div class="mem-map">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-dim);margin-bottom:6px">MAPA DE MEMÓRIA</div>
+            <div class="mem-row"><div class="mem-addr">0x0000</div><div class="mem-label mem-os">Kernel / SO</div></div>
+            <div class="mem-row"><div class="mem-addr">0x1000</div><div class="mem-label mem-proc">Processo A (ativo)</div></div>
+            <div class="mem-row"><div class="mem-addr">0x2000</div><div class="mem-label mem-proc">Processo B (ativo)</div></div>
+            <div class="mem-row"><div class="mem-addr">0x3000</div><div class="mem-label mem-swap">⟵ SWAP OUT (foi pro disco)</div></div>
+            <div class="mem-row"><div class="mem-addr">0x4000</div><div class="mem-label mem-free">Livre</div></div>
+          </div>
+          <div class="highlight-box" style="margin-top:12px">
+            <strong>Swap Out:</strong> Página da RAM → Disco (quando RAM cheia)<br>
+            <strong>Swap In:</strong> Página do Disco → RAM (quando processo precisa dela)<br><br>
+            <strong>⚠️ Cuidado:</strong> Swap é muito mais lento que RAM. Excesso de swap = "thrashing" — o sistema fica lento demais.
+          </div>
+        </div>
+        <button class="expand-btn"><span class="arrow">▶</span> ver mais</button>
+      </div>
+ 
+    </div>
+  </section>
+ 
+  <!-- ════════════ ESCALONAMENTO ════════════ -->
+  <section id="escalonamento" class="fade-in">
+    <div class="section-label">
+      <div class="tag red">04</div>
+      <h2>Escalonamento de Processos</h2>
+      <div class="line"></div>
+    </div>
+ 
+    <div class="card-grid wide">
+ 
+      <div class="card" onclick="toggleCard(this)">
+        <div class="card-header">
+          <div class="card-icon icon-cyan">📥</div>
+          <h3>FIFO — First In, First Out</h3>
+          <span class="keyword">ESCALONAMENTO</span>
+        </div>
+        <p>O processo que chega <strong style="color:var(--text)">primeiro é executado primeiro</strong>. Simples e justo na chegada, mas pode causar o "efeito comboio" — um processo longo trava todos os demais.</p>
+        <div class="detail">
+          <div style="margin-top:8px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-dim)">FILA DE PROCESSOS (ordem de chegada):</div>
+          <div class="process-queue">
+            <div class="process-box active">P1<span>10ms</span></div>
+            <div class="process-box">P2<span>2ms</span></div>
+            <div class="process-box">P3<span>5ms</span></div>
+            <div class="process-box">P4<span>1ms</span></div>
+          </div>
+          <div style="margin-top:8px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent)">→ Executa P1 (10ms) → P2 (2ms) → P3 (5ms) → P4 (1ms)</div>
+          <div class="highlight-box" style="margin-top:10px">
+            <strong>Tempo médio de espera:</strong> P1=0, P2=10, P3=12, P4=17 → média = <strong>9.75ms</strong><br><br>
+            <strong>Problema:</strong> P4 (1ms) espera 17ms por culpa do P1 (10ms). Isso é o <strong>"efeito comboio"</strong>.
+          </div>
+        </div>
+        <button class="expand-btn"><span class="arrow">▶</span> ver mais</button>
+      </div>
+ 
+      <div class="card" onclick="toggleCard(this)">
+        <div class="card-header">
+          <div class="card-icon icon-green">⚡</div>
+          <h3>SJF — Shortest Job First</h3>
+          <span class="keyword">ESCALONAMENTO</span>
+        </div>
+        <p>Executa <strong style="color:var(--text)">o processo mais curto primeiro</strong>. Minimiza o tempo médio de espera — é o algoritmo ótimo nesse critério. Porém, pode causar <strong style="color:var(--text)">inanição</strong> (starvation) de processos longos.</p>
+        <div class="detail">
+          <div style="margin-top:8px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-dim)">MESMA FILA, REORDENADA POR TAMANHO:</div>
+          <div class="process-queue">
+            <div class="process-box active">P4<span>1ms</span></div>
+            <div class="process-box">P2<span>2ms</span></div>
+            <div class="process-box">P3<span>5ms</span></div>
+            <div class="process-box">P1<span>10ms</span></div>
+          </div>
+          <div style="margin-top:8px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent4)">→ Executa P4 (1ms) → P2 (2ms) → P3 (5ms) → P1 (10ms)</div>
+          <div class="highlight-box green" style="margin-top:10px">
+            <strong>Tempo médio de espera:</strong> P4=0, P2=1, P3=3, P1=8 → média = <strong>3ms</strong><br><br>
+            Muito melhor que FIFO (9.75ms)! Mas o problema: <strong>como o SO sabe quanto tempo um processo vai demorar?</strong> Geralmente usa estimativas baseadas no histórico.
+          </div>
+          <div class="highlight-box amber" style="margin-top:8px">
+            <strong>Starvation:</strong> Se sempre chegam processos curtos, o processo longo <em>nunca</em> executa. Solução: <strong>Aging</strong> (aumentar prioridade com o tempo de espera).
+          </div>
+        </div>
+        <button class="expand-btn"><span class="arrow">▶</span> ver mais</button>
+      </div>
+ 
+    </div>
+ 
+    <div class="highlight-box" style="margin-top:16px">
+      <strong style="color:var(--text)">Comparativo rápido de escalonadores:</strong><br><br>
+      <strong>FIFO/FCFS</strong> — simples, não-preemptivo, justo na chegada, sujeito a efeito comboio<br>
+      <strong>SJF</strong> — ótimo em tempo médio de espera, não-preemptivo, pode causar starvation<br>
+      <strong>Round Robin</strong> — preemptivo, usa time slice, justo para todos, bom para interatividade<br>
+      <strong>Prioridade</strong> — executa por nível de prioridade, pode causar starvation (resolvido com aging)
+    </div>
+  </section>
+ 
+  <!-- ════════════ REDES ════════════ -->
+  <section id="redes" class="fade-in">
+    <div class="section-label">
+      <div class="tag">05</div>
+      <h2>Redes de Computadores</h2>
+      <div class="line"></div>
+    </div>
+ 
+    <!-- DUPLEX -->
+    <div style="margin-bottom:28px">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-dim);margin-bottom:14px;letter-spacing:0.1em">MODOS DE TRANSMISSÃO</div>
+      <div class="duplex-row">
+        <div class="duplex-card">
+          <h4 style="color:#7dd3fc">Simplex</h4>
+          <span class="arrow-anim">→</span>
+          <p>Comunicação em <strong>uma direção só</strong>. O receptor nunca envia dados de volta.</p>
+          <div class="chips" style="justify-content:center;margin-top:8px">
+            <span class="chip">TV aberta</span>
+            <span class="chip">Rádio AM/FM</span>
+            <span class="chip">Sensor → sistema</span>
+          </div>
+        </div>
+        <div class="duplex-card">
+          <h4 style="color:#fcd34d">Half-Duplex</h4>
+          <span class="arrow-anim">⇄</span>
+          <p>Ambos enviam e recebem, mas <strong>não ao mesmo tempo</strong>. Um fala, o outro escuta.</p>
+          <div class="chips" style="justify-content:center;margin-top:8px">
+            <span class="chip">Walkie-talkie</span>
+            <span class="chip">Wi-Fi antigo</span>
+            <span class="chip">Hub Ethernet</span>
+          </div>
+        </div>
+        <div class="duplex-card">
+          <h4 style="color:#86efac">Full-Duplex</h4>
+          <span class="arrow-anim">⇌</span>
+          <p>Ambos enviam e recebem <strong>simultaneamente</strong>. Dois canais independentes.</p>
+          <div class="chips" style="justify-content:center;margin-top:8px">
+            <span class="chip">Telefone</span>
+            <span class="chip">Switch Ethernet</span>
+            <span class="chip">Fibra óptica</span>
+          </div>
+        </div>
+      </div>
+    </div>
+ 
+    <div class="card-grid">
+ 
+      <div class="card" onclick="toggleCard(this)">
+        <div class="card-header">
+          <div class="card-icon icon-cyan">🌐</div>
+          <h3>Modelo OSI — 7 Camadas</h3>
+          <span class="keyword">REDES</span>
+        </div>
+        <p>Modelo de referência que divide a comunicação em rede em <strong style="color:var(--text)">7 camadas independentes</strong>. Cada camada tem funções específicas e se comunica com as vizinhas.</p>
+        <div class="detail">
+          <div class="mem-map">
+            <div class="mem-row"><div class="mem-addr" style="width:80px">7 — App</div><div class="mem-label mem-os">HTTP, FTP, DNS, SMTP — interface com o usuário</div></div>
+            <div class="mem-row"><div class="mem-addr" style="width:80px">6 — Apres.</div><div class="mem-label mem-proc">Criptografia, compressão, codificação (SSL/TLS)</div></div>
+            <div class="mem-row"><div class="mem-addr" style="width:80px">5 — Sessão</div><div class="mem-label mem-swap">Estabelece/encerra sessões entre aplicações</div></div>
+            <div class="mem-row"><div class="mem-addr" style="width:80px">4 — Transp.</div><div class="mem-label mem-proc">TCP/UDP — segmentação, portas, confiabilidade</div></div>
+            <div class="mem-row"><div class="mem-addr" style="width:80px">3 — Rede</div><div class="mem-label mem-os">IP, roteamento — endereçamento lógico</div></div>
+            <div class="mem-row"><div class="mem-addr" style="width:80px">2 — Enlace</div><div class="mem-label mem-swap">MAC, switches, quadros — enlace físico</div></div>
+            <div class="mem-row"><div class="mem-addr" style="width:80px">1 — Física</div><div class="mem-label mem-free">Bits, cabos, sinais elétricos/ópticos</div></div>
+          </div>
+          <div class="highlight-box" style="margin-top:10px">
+            <strong>Mnemônico:</strong> "Através Para Sessões, Transportamos Redes Em Fragmentos" → App, Apresentação, Sessão, Transporte, Rede, Enlace, Física
+          </div>
+        </div>
+        <button class="expand-btn"><span class="arrow">▶</span> ver mais</button>
+      </div>
+ 
+      <div class="card" onclick="toggleCard(this)">
+        <div class="card-header">
+          <div class="card-icon icon-amber">📦</div>
+          <h3>TCP vs UDP</h3>
+          <span class="keyword">PROTOCOLOS</span>
+        </div>
+        <p><strong style="color:var(--text)">TCP:</strong> confiável, com confirmação de entrega, ordenado — mas mais lento. <strong style="color:var(--text)">UDP:</strong> rápido, sem garantias — ideal para tempo real.</p>
+        <div class="detail">
+          <table class="compare-table">
+            <tr><th>TCP</th><th>UDP</th></tr>
+            <tr><td>Orientado à conexão (handshake)</td><td>Sem conexão</td></tr>
+            <tr><td>Entrega garantida (ACK)</td><td>Sem garantia</td></tr>
+            <tr><td>Ordenado</td><td>Pode chegar fora de ordem</td></tr>
+            <tr><td>Controle de fluxo e congestionamento</td><td>Sem controle</td></tr>
+            <tr><td>HTTP, HTTPS, FTP, SMTP</td><td>DNS, streaming, games, VoIP</td></tr>
+          </table>
+        </div>
+        <button class="expand-btn"><span class="arrow">▶</span> ver mais</button>
+      </div>
+ 
+      <div class="card" onclick="toggleCard(this)">
+        <div class="card-header">
+          <div class="card-icon icon-green">🔢</div>
+          <h3>Endereçamento IP e Máscaras</h3>
+          <span class="keyword">REDES</span>
+        </div>
+        <p>IPv4 usa <strong style="color:var(--text)">32 bits</strong> divididos em 4 octetos. A máscara de sub-rede separa a parte de <em style="color:var(--text)">rede</em> da parte de <em style="color:var(--text)">host</em> no endereço IP.</p>
+        <div class="detail">
+          <pre><span class="comment">IP:      192.168.1.100</span>
+<span class="comment">Máscara: 255.255.255.0  (/24)</span>
+<span class="comment">Rede:    192.168.1.0</span>
+<span class="comment">Hosts:   192.168.1.1 até 192.168.1.254</span>
+<span class="comment">Broadcast: 192.168.1.255</span></pre>
+          <table class="compare-table" style="margin-top:10px">
+            <tr><th>Classe</th><th>Faixa</th><th>Máscara Padrão</th></tr>
+            <tr><td>A</td><td>1.0.0.0 – 126.x.x.x</td><td>255.0.0.0 /8</td></tr>
+            <tr><td>B</td><td>128.0.0.0 – 191.x.x.x</td><td>255.255.0.0 /16</td></tr>
+            <tr><td>C</td><td>192.0.0.0 – 223.x.x.x</td><td>255.255.255.0 /24</td></tr>
+          </table>
+        </div>
+        <button class="expand-btn"><span class="arrow">▶</span> ver mais</button>
+      </div>
+ 
+      <div class="card" onclick="toggleCard(this)">
+        <div class="card-header">
+          <div class="card-icon icon-purple">🔌</div>
+          <h3>Dispositivos de Rede</h3>
+          <span class="keyword">HARDWARE DE REDE</span>
+        </div>
+        <p>Cada dispositivo de rede opera em uma camada diferente do modelo OSI e tem funções bem distintas. Saber diferenciar hub, switch e roteador é clássico de prova!</p>
+        <div class="detail">
+          <table class="compare-table">
+            <tr><th>Dispositivo</th><th>Camada OSI</th><th>Função</th></tr>
+            <tr><td>Hub</td><td>1 — Física</td><td>Repete sinal para TODAS as portas (half-duplex)</td></tr>
+            <tr><td>Switch</td><td>2 — Enlace</td><td>Encaminha por endereço MAC para a porta correta</td></tr>
+            <tr><td>Roteador</td><td>3 — Rede</td><td>Encaminha pacotes por endereço IP entre redes</td></tr>
+            <tr><td>Gateway</td><td>7 — Aplicação</td><td>Conecta redes com protocolos diferentes</td></tr>
+          </table>
+        </div>
+        <button class="expand-btn"><span class="arrow">▶</span> ver mais</button>
+      </div>
+ 
+      <div class="card" onclick="toggleCard(this)">
+        <div class="card-header">
+          <div class="card-icon icon-red">🌍</div>
+          <h3>Internet, Intranet e Extranet</h3>
+          <span class="keyword">REDES</span>
+        </div>
+        <p>Três tipos de redes com diferentes escopos de acesso. Questão frequente em provas!</p>
+        <div class="detail">
+          <table class="compare-table">
+            <tr><th>Tipo</th><th>Acesso</th><th>Exemplo</th></tr>
+            <tr><td>Internet</td><td>Público — qualquer pessoa</td><td>Google, sites, redes sociais</td></tr>
+            <tr><td>Intranet</td><td>Privado — só dentro da organização</td><td>Portal interno de empresa</td></tr>
+            <tr><td>Extranet</td><td>Privado — parceiros autorizados de fora</td><td>Portal de fornecedores de uma empresa</td></tr>
+          </table>
+          <div class="highlight-box" style="margin-top:10px">
+            <strong>Chave:</strong> Intranet e Extranet usam as mesmas tecnologias da Internet (HTTP, TCP/IP), mas com acesso restrito por autenticação ou VPN.
+          </div>
+        </div>
+        <button class="expand-btn"><span class="arrow">▶</span> ver mais</button>
+      </div>
+ 
+      <div class="card" onclick="toggleCard(this)">
+        <div class="card-header">
+          <div class="card-icon icon-cyan">📡</div>
+          <h3>DHCP, DNS e MAC</h3>
+          <span class="keyword">PROTOCOLOS</span>
+        </div>
+        <p>Três conceitos fundamentais de redes que aparecem muito em provas de S.O. e Redes.</p>
+        <div class="detail">
+          <div class="highlight-box">
+            <strong>DHCP</strong> (Dynamic Host Configuration Protocol): distribui endereços IP automaticamente para dispositivos na rede. Sem ele, cada IP seria configurado manualmente.
+          </div>
+          <div class="highlight-box purple" style="margin-top:8px">
+            <strong>DNS</strong> (Domain Name System): traduz nomes (google.com) em IPs (142.250.x.x). É a "agenda telefônica" da internet.
+          </div>
+          <div class="highlight-box amber" style="margin-top:8px">
+            <strong>MAC</strong> (Media Access Control): endereço físico único de 48 bits gravado na placa de rede. Usado na camada 2 (Enlace). Switches encaminham com base no MAC.
+          </div>
+        </div>
+        <button class="expand-btn"><span class="arrow">▶</span> ver mais</button>
+      </div>
+ 
+    </div>
+  </section>
+ 
+  <!-- ════════════ QUIZ ════════════ -->
+  <section id="quiz" class="fade-in">
+    <div class="section-label">
+      <div class="tag amber">⚡</div>
+      <h2>Quiz Rápido — Teste seu conhecimento</h2>
+      <div class="line"></div>
+    </div>
+ 
+    <div id="score-bar" class="score-bar">
+      <span>Pontuação:</span>
+      <span class="score-val" id="score-val">0</span>
+      <span>/</span>
+      <span id="score-total">8</span>
+      <span style="color:var(--text-dim)">questões</span>
+    </div>
+ 
+    <div style="display:flex;flex-direction:column;gap:16px;margin-top:16px">
+ 
+      <div class="quiz-card">
+        <div class="quiz-label">QUESTÃO 01 — S.O.</div>
+        <h3>Qual algoritmo de escalonamento garante o <strong>menor tempo médio de espera</strong>, porém pode causar starvation?</h3>
+        <div class="quiz-options">
+          <button class="quiz-opt" onclick="answer(this,'wrong','O FIFO não otimiza o tempo médio de espera — ele só respeita a ordem de chegada.')">FIFO (First In, First Out)</button>
+          <button class="quiz-opt" onclick="answer(this,'correct','Correto! O SJF executa o menor job primeiro, minimizando o tempo médio de espera. Mas processos longos podem nunca ser executados (starvation).')">SJF (Shortest Job First) </button>
+          <button class="quiz-opt" onclick="answer(this,'wrong','Round Robin é justo para todos e não causa starvation por usar time slice.')">Round Robin</button>
+          <button class="quiz-opt" onclick="answer(this,'wrong','Escalonamento por prioridade pode causar starvation, mas não é o ótimo em tempo médio de espera.')">Prioridade Estática</button>
+        </div>
+        <div class="quiz-feedback"></div>
+      </div>
+ 
+      <div class="quiz-card">
+        <div class="quiz-label">QUESTÃO 02 — MEMÓRIA</div>
+        <h3>O que acontece durante um <strong>Swap Out</strong>?</h3>
+        <div class="quiz-options">
+          <button class="quiz-opt" onclick="answer(this,'wrong','Não — Swap In é quando dado volta do disco para a RAM.')">Uma página do disco é carregada na RAM</button>
+          <button class="quiz-opt" onclick="answer(this,'correct','Correto! No Swap Out, o SO move uma página da RAM para o disco (área de swap) para liberar espaço na memória principal.')">Uma página da RAM é movida para o disco </button>
+          <button class="quiz-opt" onclick="answer(this,'wrong','Não — isso é o trabalho da MMU, que faz tradução de endereços.')">A MMU converte endereços virtuais em físicos</button>
+          <button class="quiz-opt" onclick="answer(this,'wrong','Não — o processo é pausado quando necessário, mas isso não define Swap Out.')">Um processo é encerrado para liberar memória</button>
+        </div>
+        <div class="quiz-feedback"></div>
+      </div>
+ 
+      <div class="quiz-card">
+        <div class="quiz-label">QUESTÃO 03 — REDES</div>
+        <h3>Um walkie-talkie é um exemplo de qual modo de comunicação?</h3>
+        <div class="quiz-options">
+          <button class="quiz-opt" onclick="answer(this,'wrong','Simplex é apenas uma direção, sem resposta possível (ex: rádio AM).')">Simplex</button>
+          <button class="quiz-opt" onclick="answer(this,'correct','Correto! No walkie-talkie, um fala e o outro escuta — não é possível falar ao mesmo tempo. Isso é Half-Duplex.')">Half-Duplex </button>
+          <button class="quiz-opt" onclick="answer(this,'wrong','Full-Duplex permite comunicação simultânea nos dois sentidos, como no telefone.')">Full-Duplex</button>
+        </div>
+        <div class="quiz-feedback"></div>
+      </div>
+ 
+      <div class="quiz-card">
+        <div class="quiz-label">QUESTÃO 04 — HARDWARE</div>
+        <h3>Qual componente da CPU é responsável por realizar operações como soma, subtração e AND lógico?</h3>
+        <div class="quiz-options">
+          <button class="quiz-opt" onclick="answer(this,'wrong','A Unidade de Controle coordena o funcionamento da CPU, mas não realiza cálculos.')">Unidade de Controle</button>
+          <button class="quiz-opt" onclick="answer(this,'wrong','Os Registradores armazenam dados temporariamente, mas não realizam cálculos.')">Registradores</button>
+          <button class="quiz-opt" onclick="answer(this,'correct','Correto! A ULA (Unidade Lógica e Aritmética) é responsável por todas as operações matemáticas e lógicas da CPU.')">ULA (Unidade Lógica e Aritmética) </button>
+          <button class="quiz-opt" onclick="answer(this,'wrong','O Cache armazena dados frequentemente acessados, mas não realiza cálculos.')">Cache L1</button>
+        </div>
+        <div class="quiz-feedback"></div>
+      </div>
+ 
+      <div class="quiz-card">
+        <div class="quiz-label">QUESTÃO 05 — S.O.</div>
+        <h3>No modelo <strong>Microkernel</strong>, o que fica fora do núcleo do sistema?</h3>
+        <div class="quiz-options">
+          <button class="quiz-opt" onclick="answer(this,'wrong','O escalonador básico fica dentro do microkernel — ele é uma das funções essenciais do núcleo.')">Escalonador de processos básico</button>
+          <button class="quiz-opt" onclick="answer(this,'wrong','Comunicação entre processos (IPC) é uma das funções essenciais do microkernel.')">Comunicação entre processos (IPC)</button>
+          <button class="quiz-opt" onclick="answer(this,'correct','Correto! No microkernel, drivers de dispositivos, sistemas de arquivos e protocolos de rede rodam fora do kernel, como servidores em modo usuário.')">Drivers de dispositivos e sistema de arquivos </button>
+          <button class="quiz-opt" onclick="answer(this,'wrong','O gerenciamento básico de memória fica no microkernel.')">Gerenciamento básico de memória</button>
+        </div>
+        <div class="quiz-feedback"></div>
+      </div>
+ 
+      <div class="quiz-card">
+        <div class="quiz-label">QUESTÃO 06 — REDES</div>
+        <h3>Em qual camada do modelo OSI o <strong>Switch</strong> opera?</h3>
+        <div class="quiz-options">
+          <button class="quiz-opt" onclick="answer(this,'wrong','A camada física (1) é onde o Hub opera — apenas repete o sinal elétrico.')">Camada 1 — Física</button>
+          <button class="quiz-opt" onclick="answer(this,'correct','Correto! O Switch opera na camada de Enlace (2), encaminhando quadros com base no endereço MAC.')">Camada 2 — Enlace de Dados </button>
+          <button class="quiz-opt" onclick="answer(this,'wrong','A camada de Rede (3) é onde o Roteador opera, usando endereços IP.')">Camada 3 — Rede</button>
+          <button class="quiz-opt" onclick="answer(this,'wrong','A camada de Transporte (4) é onde o TCP e UDP operam.')">Camada 4 — Transporte</button>
+        </div>
+        <div class="quiz-feedback"></div>
+      </div>
+ 
+      <div class="quiz-card">
+        <div class="quiz-label">QUESTÃO 07 — S.O.</div>
+        <h3>Qual a principal diferença entre uma <strong>Thread</strong> e um <strong>Processo</strong>?</h3>
+        <div class="quiz-options">
+          <button class="quiz-opt" onclick="answer(this,'wrong','Na verdade, threads do mesmo processo compartilham memória — processos é que têm memória isolada.')">Threads possuem memória isolada, processos compartilham</button>
+          <button class="quiz-opt" onclick="answer(this,'correct','Correto! Threads de um mesmo processo compartilham o mesmo espaço de memória (heap, globals), enquanto processos têm memória independente.')">Threads compartilham memória do processo; processos têm memória independente </button>
+          <button class="quiz-opt" onclick="answer(this,'wrong','Processos podem ser criados sem threads. Threads existem dentro de processos.')">Processos são criados a partir de threads</button>
+        </div>
+        <div class="quiz-feedback"></div>
+      </div>
+ 
+      <div class="quiz-card">
+        <div class="quiz-label">QUESTÃO 08 — S.O.</div>
+        <h3>O JCL é utilizado principalmente para: <code style="background:var(--surface2);padding:2px 6px;border-radius:4px;font-size:12px"</h3>
+        <div class="quiz-options">
+          <button class="quiz-opt" onclick="answer(this,'wrong','JCL não gerencia memória — ele só define tarefas.')">Gerenciar memória RAM</button>
+          <button class="quiz-opt" onclick="answer(this,'wrong','JCL não tem nada a ver com interface visual - ele é usado em sistemas antigos/mainframes e funciona via texto.')">Criar interfaces gráficas</button>
+          <button class="quiz-opt" onclick="answer(this,'correct','Correto! O JCL serve para: Definir tarefas/jobs, indicar arquivos de entrada/saída,  e organizar execução em lote - batch.')">Gerenciar execução de jobs em sistemas batch </button>
+          <button class="quiz-opt" onclick="answer(this,'wrong','O JCL apenas descreve o que deve ser executado, não executa nem controla hardware. Quem controla diretamente é o sistema operacional - kernel.')">Controlar hardware diretamente</button>
+        </div>
+        <div class="quiz-feedback"></div>
+      </div>
+ 
+    </div>
+  </section>
+ 
+  <!-- ════════════ RESUMO RÁPIDO ════════════ -->
+  <section class="fade-in">
+    <div class="section-label">
+      <div class="tag green">⚡</div>
+      <h2>Cheat Sheet — Revisão Relâmpago</h2>
+      <div class="line"></div>
+    </div>
+    <div class="card" style="cursor:default">
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px">
+        <div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);margin-bottom:8px;letter-spacing:0.1em">HARDWARE</div>
+          <div style="font-size:12px;line-height:1.9;color:var(--text-muted)">
+            CPU = busca + decodifica + executa<br>
+            ULA = cálculos e lógica<br>
+            Registradores = memória ultrarrápida na CPU<br>
+            RAM = memória volátil e rápida<br>
+            HD = armazenamento persistente<br>
+            Controladora = gerencia dispositivos I/O
+          </div>
+        </div>
+        <div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#c4b5fd;margin-bottom:8px;letter-spacing:0.1em">SISTEMAS OPERACIONAIS</div>
+          <div style="font-size:12px;line-height:1.9;color:var(--text-muted)">
+            Multinível = camadas de abstração<br>
+            JCL = scripts para jobs batch em mainframe<br>
+            GUI = interface gráfica (WIMP)<br>
+            System Call = programa → kernel<br>
+            Monotarefa = 1 processo / Multitarefa = N<br>
+            Microkernel = kernel mínimo, resto fora<br>
+            Thread = sub-fluxo de execução
+          </div>
+        </div>
+        <div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#6ee7b7;margin-bottom:8px;letter-spacing:0.1em">MEMÓRIA</div>
+          <div style="font-size:12px;line-height:1.9;color:var(--text-muted)">
+            MMU = virtual → físico<br>
+            Swap Out = RAM → Disco<br>
+            Swap In = Disco → RAM<br>
+            Thrashing = swap excessivo = lentidão<br>
+            FIFO = menor espera na chegada<br>
+            SJF = menor job primeiro, starvation
+          </div>
+        </div>
+        <div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#fcd34d;margin-bottom:8px;letter-spacing:0.1em">REDES</div>
+          <div style="font-size:12px;line-height:1.9;color:var(--text-muted)">
+            Simplex = 1 direção só<br>
+            Half-duplex = 2 direções, não simultâneo<br>
+            Full-duplex = 2 direções simultâneas<br>
+            Hub = camada 1, repete tudo<br>
+            Switch = camada 2, usa MAC<br>
+            Roteador = camada 3, usa IP<br>
+            TCP = confiável / UDP = rápido
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+ 
+</main>
+ 
+<footer>
+  boa prova pra nós <br>
+  <strong>lembrem-se:</strong> entendam o <em>porquê</em> de cada conceito, não só a definição. <br> revisão M1 — S.O. &amp; Redes 2026 <br> por Karina Pagnani e suas amigas IA's
+</footer>
+ 
+<script>
+ // Scroll progress
+  window.addEventListener('scroll', () => {
+    const h = document.documentElement;
+    const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+    document.getElementById('pgbar').style.width = pct + '%';
+    document.getElementById('pglabel').textContent = Math.round(pct) + '% lido';
+  });
+ 
+  // Fade in on scroll
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+ 
+  // Toggle card expansion
+  function toggleCard(card) {
+    if (event.target.classList.contains('quiz-opt') || event.target.closest('.quiz-options')) return;
+    card.classList.toggle('expanded');
+    const btn = card.querySelector('.expand-btn');
+    if (btn) {
+      const isExpanded = card.classList.contains('expanded');
+      btn.innerHTML = '<span class="arrow">' + (isExpanded ? '▼' : '▶') + '</span> ' + (isExpanded ? 'ver menos' : 'ver mais');
+    }
+  }
+ 
+  // Quiz
+  let score = 0;
+  const answered = new Set();
+ 
+  function answer(btn, result, feedback) {
+    const card = btn.closest('.quiz-card');
+    const idx = [...document.querySelectorAll('.quiz-card')].indexOf(card);
+    if (answered.has(idx)) return;
+    answered.add(idx);
+ 
+    const opts = card.querySelectorAll('.quiz-opt');
+    opts.forEach(o => o.classList.add('disabled'));
+    btn.classList.add(result);
+ 
+    if (result === 'correct') {
+      score++;
+      document.getElementById('score-val').textContent = score;
+    }
+ 
+    const fb = card.querySelector('.quiz-feedback');
+    fb.textContent = (result === 'correct' ? '✅ ' : '❌ ') + feedback;
+    fb.className = 'quiz-feedback show ' + (result === 'correct' ? 'ok' : 'err');
+  }
+ 
+  function resetQuiz() {
+    score = 0;
+    answered.clear();
+    document.getElementById('score-val').textContent = 0;
+    document.querySelectorAll('.quiz-card').forEach(card => {
+      card.querySelectorAll('.quiz-opt').forEach(o => {
+        o.classList.remove('disabled', 'correct', 'wrong');
+      });
+      const fb = card.querySelector('.quiz-feedback');
+      fb.className = 'quiz-feedback';
+      fb.textContent = '';
+    });
+  }
+</script>
+</body>
+</html>
