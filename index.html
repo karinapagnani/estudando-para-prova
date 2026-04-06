@@ -594,7 +594,6 @@
     color: var(--accent);
   }
  
-  /* CHIP */
   .chips {
     display: flex;
     flex-wrap: wrap;
@@ -710,7 +709,6 @@
  
 <main>
  
-  <!-- ════════════ HARDWARE ════════════ -->
   <section id="hardware" class="fade-in">
     <div class="section-label">
       <div class="tag amber">01</div>
@@ -860,7 +858,6 @@
     </div>
   </section>
  
-  <!-- ════════════ SISTEMAS OPERACIONAIS ════════════ -->
   <section id="so" class="fade-in">
     <div class="section-label">
       <div class="tag purple">02</div>
@@ -1041,7 +1038,6 @@ Nível 0 — Lógica Digital (portas lógicas, transistores)</div>
     </div>
   </section>
  
-  <!-- ════════════ MEMÓRIA ════════════ -->
   <section id="memoria" class="fade-in">
     <div class="section-label">
       <div class="tag green">03</div>
@@ -1108,7 +1104,6 @@ Nível 0 — Lógica Digital (portas lógicas, transistores)</div>
     </div>
   </section>
  
-  <!-- ════════════ ESCALONAMENTO ════════════ -->
   <section id="escalonamento" class="fade-in">
     <div class="section-label">
       <div class="tag red">04</div>
@@ -1180,7 +1175,6 @@ Nível 0 — Lógica Digital (portas lógicas, transistores)</div>
     </div>
   </section>
  
-  <!-- ════════════ REDES ════════════ -->
   <section id="redes" class="fade-in">
     <div class="section-label">
       <div class="tag">05</div>
@@ -1188,7 +1182,6 @@ Nível 0 — Lógica Digital (portas lógicas, transistores)</div>
       <div class="line"></div>
     </div>
  
-    <!-- DUPLEX -->
     <div style="margin-bottom:28px">
       <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-dim);margin-bottom:14px;letter-spacing:0.1em">MODOS DE TRANSMISSÃO</div>
       <div class="duplex-row">
@@ -1358,7 +1351,7 @@ Nível 0 — Lógica Digital (portas lógicas, transistores)</div>
     </div>
   </section>
  
-  <!-- ════════════ QUIZ ════════════ -->
+  <!--  QUIZ SIMPLES E SEM FIRULA, QUANDO ERRA NÃO MOSTRA A CORRETA PRA NÃO ROUBARRR-->
   <section id="quiz" class="fade-in">
     <div class="section-label">
       <div class="tag amber">⚡</div>
@@ -1473,7 +1466,7 @@ Nível 0 — Lógica Digital (portas lógicas, transistores)</div>
     </div>
   </section>
  
-  <!-- ════════════ RESUMO RÁPIDO ════════════ -->
+  <!-- RESUMO RÁPIDOOOOOOO PRA FECHAR COM CHAVE DE OURO MIGOS -->
   <section class="fade-in">
     <div class="section-label">
       <div class="tag green">⚡</div>
@@ -1540,7 +1533,7 @@ Nível 0 — Lógica Digital (portas lógicas, transistores)</div>
 </footer>
  
 <script>
- // Scroll progress
+ // progresso da página (função top! gosto muito)
   window.addEventListener('scroll', () => {
     const h = document.documentElement;
     const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
@@ -1548,13 +1541,13 @@ Nível 0 — Lógica Digital (portas lógicas, transistores)</div>
     document.getElementById('pglabel').textContent = Math.round(pct) + '% lido';
   });
  
-  // Fade in on scroll
+  // fade in ao scrolar
   const observer = new IntersectionObserver(entries => {
     entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
   }, { threshold: 0.1 });
   document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
  
-  // Toggle card expansion
+  // função de expandir o card
   function toggleCard(card) {
     if (event.target.classList.contains('quiz-opt') || event.target.closest('.quiz-options')) return;
     card.classList.toggle('expanded');
