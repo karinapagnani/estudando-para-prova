@@ -6,7 +6,7 @@
 <title>Revisão m1 — S.O. & Redes</title>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
 <style>
-  :root {
+ :root {
     --bg: #0a0c10;
     --surface: #111318;
     --surface2: #181c24;
@@ -32,6 +32,7 @@
     overflow-x: hidden;
   }
  
+  /* Animated background grid */
   body::before {
     content: '';
     position: fixed;
@@ -44,6 +45,7 @@
     z-index: 0;
   }
  
+  /* TOP BAR */
   header {
     position: sticky;
     top: 0;
@@ -95,6 +97,7 @@
     width: 0%;
   }
  
+  /* HERO */
   .hero {
     position: relative;
     z-index: 1;
@@ -146,6 +149,7 @@
     font-family: 'JetBrains Mono', monospace;
   }
  
+  /* NAV PILLS */
   .nav-pills {
     display: flex;
     flex-wrap: wrap;
@@ -176,6 +180,7 @@
     background: rgba(0,229,255,0.05);
   }
  
+  /* MAIN LAYOUT */
   main {
     position: relative;
     z-index: 1;
@@ -187,6 +192,7 @@
     gap: 64px;
   }
  
+  /* SECTION */
   .section-label {
     display: flex;
     align-items: center;
@@ -223,6 +229,7 @@
     background: linear-gradient(90deg, var(--border), transparent);
   }
  
+  /* CARD GRID */
   .card-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -233,6 +240,7 @@
     grid-template-columns: repeat(auto-fill, minmax(480px, 1fr));
   }
  
+  /* CARD */
   .card {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -347,6 +355,7 @@
  
   .card.expanded .arrow { transform: rotate(90deg); }
  
+  /* CODE BLOCK */
   pre {
     background: var(--surface2);
     border: 1px solid var(--border);
@@ -364,6 +373,7 @@
   pre .keyword { color: #c084fc; }
   pre .string { color: #86efac; }
  
+  /* TABLE */
   .compare-table {
     width: 100%;
     border-collapse: collapse;
@@ -393,6 +403,7 @@
   .compare-table tr:last-child td { border-bottom: none; }
   .compare-table td:first-child { color: var(--text); font-weight: 700; }
  
+  /* HIGHLIGHT BOX */
   .highlight-box {
     background: rgba(0,229,255,0.04);
     border: 1px solid rgba(0,229,255,0.15);
@@ -425,6 +436,7 @@
  
   .highlight-box strong { color: var(--text); }
  
+  /* DIAGRAM */
   .diagram {
     background: var(--surface2);
     border: 1px solid var(--border);
@@ -439,6 +451,7 @@
     line-height: 1.8;
   }
  
+  /* QUIZ */
   .quiz-card {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -511,6 +524,7 @@
   .quiz-feedback.ok { background: rgba(16,185,129,0.08); color: #6ee7b7; }
   .quiz-feedback.err { background: rgba(239,68,68,0.08); color: #fca5a5; }
  
+  /* SCORE */
   .score-bar {
     display: flex;
     align-items: center;
@@ -531,6 +545,7 @@
     color: var(--accent);
   }
  
+  /* DUPLEX VISUAL */
   .duplex-row {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
@@ -565,6 +580,7 @@
     display: block;
   }
  
+  /* FIFO/SJF VISUAL */
   .process-queue {
     display: flex;
     gap: 8px;
@@ -594,6 +610,7 @@
     color: var(--accent);
   }
  
+  /* CHIP */
   .chips {
     display: flex;
     flex-wrap: wrap;
@@ -652,6 +669,7 @@
   .mem-swap { background: rgba(245,158,11,0.07); color: #fcd34d; }
   .mem-free { background: var(--surface2); color: var(--text-dim); }
  
+  /* FOOTER */
   footer {
     position: relative;
     z-index: 1;
@@ -665,6 +683,7 @@
  
   footer strong { color: var(--accent); }
  
+  /* SCROLL ANIMATION */
   .fade-in {
     opacity: 0;
     transform: translateY(24px);
@@ -675,6 +694,7 @@
     transform: translateY(0);
   }
  
+  /* RESPONSIVE */
   @media (max-width: 700px) {
     .card-grid.wide { grid-template-columns: 1fr; }
     .duplex-row { grid-template-columns: 1fr; }
@@ -704,6 +724,7 @@
   <a class="pill" href="#memoria">Memória</a>
   <a class="pill" href="#escalonamento">Escalonamento</a>
   <a class="pill" href="#redes">Redes</a>
+  <a class="pill" href="#osi">Modelo OSI</a>
   <a class="pill" href="#quiz">Quiz Rápido</a>
 </div>
  
@@ -1350,6 +1371,458 @@ Nível 0 — Lógica Digital (portas lógicas, transistores)</div>
  
     </div>
   </section>
+
+ <section id="osi" class="fade-in">
+    <div class="section-label">
+      <div class="tag" style="color:#f472b6;background:rgba(244,114,182,0.07);border-color:rgba(244,114,182,0.2)">06</div>
+      <h2>Modelo OSI — Detalhado</h2>
+      <div class="line"></div>
+    </div>
+ 
+    <!-- Intro -->
+    <div class="card" style="cursor:default;margin-bottom:24px">
+      <div style="display:flex;align-items:flex-start;gap:20px;flex-wrap:wrap">
+        <div style="flex:1;min-width:260px">
+          <h3 style="font-size:17px;margin-bottom:10px">O que é o Modelo OSI?</h3>
+          <p style="font-size:13px;line-height:1.8;color:var(--text-muted)">
+            O <strong style="color:var(--text)">OSI (Open Systems Interconnection)</strong> é um modelo de referência criado pela <strong style="color:var(--text)">ISO em 1984</strong> para padronizar a comunicação entre sistemas de diferentes fabricantes. Ele divide o processo de comunicação em <strong style="color:var(--text)">7 camadas independentes</strong>, onde cada camada oferece serviços para a camada acima e usa os serviços da camada abaixo.
+          </p>
+          <p style="font-size:13px;line-height:1.8;color:var(--text-muted);margin-top:10px">
+            O modelo OSI <strong style="color:var(--text)">não é um protocolo em si</strong> — é um <em>framework conceitual</em>. Os protocolos reais (TCP/IP, HTTP, Ethernet) são implementações que se encaixam nesse modelo. Na prática, a internet usa o modelo <strong style="color:var(--text)">TCP/IP</strong>, que tem 4 camadas, mas o OSI é o modelo didático padrão do mundo acadêmico.
+          </p>
+        </div>
+        <div style="min-width:200px">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-dim);margin-bottom:8px;letter-spacing:0.1em">MNEMÔNICO</div>
+          <div style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:14px;font-family:'JetBrains Mono',monospace;font-size:11px;line-height:2">
+            <span style="color:#f472b6">7</span> <span style="color:var(--text-muted)">— </span><span style="color:var(--text)">A</span>plicação<br>
+            <span style="color:#c084fc">6</span> <span style="color:var(--text-muted)">— </span><span style="color:var(--text)">A</span>presentação<br>
+            <span style="color:#818cf8">5</span> <span style="color:var(--text-muted)">— </span><span style="color:var(--text)">S</span>essão<br>
+            <span style="color:#38bdf8">4</span> <span style="color:var(--text-muted)">— </span><span style="color:var(--text)">T</span>ransporte<br>
+            <span style="color:#34d399">3</span> <span style="color:var(--text-muted)">— </span><span style="color:var(--text)">R</span>ede<br>
+            <span style="color:#fbbf24">2</span> <span style="color:var(--text-muted)">— </span><span style="color:var(--text)">E</span>nlace<br>
+            <span style="color:#f87171">1</span> <span style="color:var(--text-muted)">— </span><span style="color:var(--text)">F</span>ísica<br>
+            <div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);color:var(--accent);font-size:10px">"<strong>A</strong>través <strong>P</strong>ara <strong>S</strong>essões,<br><strong>T</strong>ransportamos <strong>R</strong>edes <strong>E</strong>m <strong>F</strong>ragmentos"</div>
+          </div>
+        </div>
+      </div>
+      <div class="highlight-box amber" style="margin-top:16px">
+        <strong>Encapsulamento:</strong> Quando dados descem pelas camadas (no emissor), cada camada <strong>adiciona um cabeçalho</strong> (header) com suas informações de controle. Quando sobem (no receptor), cada camada <strong>remove seu cabeçalho</strong> e entrega para a de cima. Esse processo chama-se <strong>encapsulamento/desencapsulamento</strong>.
+      </div>
+    </div>
+ 
+<div class="card" onclick="toggleCard(this)" style="border-left:3px solid #f472b6">
+      <div class="card-header">
+        <div class="card-icon" style="background:rgba(244,114,182,0.12);font-size:16px;font-weight:800;font-family:'JetBrains Mono',monospace;color:#f472b6">7</div>
+        <div style="flex:1">
+          <h3 style="color:#f472b6">Camada de Aplicação</h3>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-dim);margin-top:2px">PDU: Dados (Data) &nbsp;|&nbsp; Dispositivo: Computador/Servidor</div>
+        </div>
+        <span class="keyword" style="color:#f472b6;border-color:rgba(244,114,182,0.3);background:rgba(244,114,182,0.07)">APPLICATION</span>
+      </div>
+      <p style="font-size:13px;line-height:1.75;color:var(--text-muted)">
+        É a camada mais próxima do usuário. <strong style="color:var(--text)">Não é o aplicativo em si</strong> (como o Chrome ou o Outlook), mas a <strong style="color:var(--text)">interface entre o software e a rede</strong>. Define como os programas se comunicam — os protocolos que determinam o formato e a semântica das mensagens trocadas.
+      </p>
+      <div class="detail">
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-top:4px">
+          <div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#f472b6;margin-bottom:8px">PROTOCOLOS PRINCIPAIS</div>
+            <table class="compare-table">
+              <tr><th>Protocolo</th><th>Função</th><th>Porta</th></tr>
+              <tr><td>HTTP</td><td>Transferência de páginas web (sem criptografia)</td><td>80</td></tr>
+              <tr><td>HTTPS</td><td>HTTP seguro com TLS/SSL</td><td>443</td></tr>
+              <tr><td>FTP</td><td>Transferência de arquivos</td><td>20/21</td></tr>
+              <tr><td>SMTP</td><td>Envio de e-mails</td><td>25/587</td></tr>
+              <tr><td>POP3</td><td>Recebimento de e-mails (baixa e apaga)</td><td>110</td></tr>
+              <tr><td>IMAP</td><td>Recebimento de e-mails (sincroniza)</td><td>143</td></tr>
+              <tr><td>DNS</td><td>Resolução de nomes para IPs</td><td>53</td></tr>
+              <tr><td>DHCP</td><td>Atribuição dinâmica de IPs</td><td>67/68</td></tr>
+              <tr><td>SSH</td><td>Acesso remoto seguro ao terminal</td><td>22</td></tr>
+              <tr><td>Telnet</td><td>Acesso remoto sem criptografia (legado)</td><td>23</td></tr>
+              <tr><td>SNMP</td><td>Gerenciamento de dispositivos de rede</td><td>161</td></tr>
+            </table>
+          </div>
+          <div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#f472b6;margin-bottom:8px">CONCEITOS IMPORTANTES</div>
+            <div class="highlight-box" style="margin-bottom:8px">
+              <strong>HTTP vs HTTPS:</strong> O HTTP trafega dados em texto puro — qualquer intermediário pode ler. O HTTPS encapsula o HTTP dentro do TLS, criando um canal criptografado. Isso é feito na camada de Apresentação (6), mas iniciado aqui na camada 7.
+            </div>
+            <div class="highlight-box amber">
+              <strong>DNS — como funciona:</strong><br>
+              1. Você digita "google.com"<br>
+              2. Seu SO consulta o cache local<br>
+              3. Se não tiver, consulta o servidor DNS<br>
+              4. DNS devolve o IP: 142.250.x.x<br>
+              5. Seu navegador abre conexão com esse IP
+            </div>
+            <div class="highlight-box purple" style="margin-top:8px">
+              <strong>Diferença SMTP/POP3/IMAP:</strong><br>
+              SMTP = envio de e-mail (saída)<br>
+              POP3 = baixa e-mail do servidor (e apaga de lá)<br>
+              IMAP = sincroniza e-mail (fica no servidor)
+            </div>
+          </div>
+        </div>
+      </div>
+      <button class="expand-btn"><span class="arrow">▶</span> ver mais</button>
+    </div> 
+    <!-- Camada 6 -->
+    <div class="card" onclick="toggleCard(this)" style="border-left:3px solid #c084fc;margin-top:12px">
+      <div class="card-header">
+        <div class="card-icon" style="background:rgba(192,132,252,0.12);font-size:16px;font-weight:800;font-family:'JetBrains Mono',monospace;color:#c084fc">6</div>
+        <div style="flex:1">
+          <h3 style="color:#c084fc">Camada de Apresentação</h3>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-dim);margin-top:2px">PDU: Dados (Data) &nbsp;|&nbsp; Tradução, Criptografia, Compressão</div>
+        </div>
+        <span class="keyword" style="color:#c084fc;border-color:rgba(192,132,252,0.3);background:rgba(192,132,252,0.07)">PRESENTATION</span>
+      </div>
+      <p style="font-size:13px;line-height:1.75;color:var(--text-muted)">
+        Responsável pela <strong style="color:var(--text)">sintaxe e semântica</strong> dos dados — garante que a informação enviada por um sistema seja compreendida pelo outro, mesmo que usem formatos internos diferentes. É aqui que acontecem <strong style="color:var(--text)">criptografia, compressão e conversão de formatos</strong>.
+      </p>
+      <div class="detail">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:4px">
+          <div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#c084fc;margin-bottom:8px">TRÊS FUNÇÕES PRINCIPAIS</div>
+            <div class="highlight-box purple">
+              <strong>1. Tradução/Conversão de formato</strong><br>
+              Converte dados entre formatos diferentes. Ex: ASCII ↔ EBCDIC, little-endian ↔ big-endian, JSON ↔ XML. Garante que os dados cheguem no formato que a aplicação espera.
+            </div>
+            <div class="highlight-box purple" style="margin-top:8px">
+              <strong>2. Criptografia / Descriptografia</strong><br>
+              Cifra os dados antes de enviar e decifra ao receber. O protocolo <strong>TLS/SSL</strong> opera aqui — é ele que dá o "S" do HTTPS. Usa algoritmos como AES, RSA, ChaCha20.
+            </div>
+            <div class="highlight-box purple" style="margin-top:8px">
+              <strong>3. Compressão / Descompressão</strong><br>
+              Reduz o tamanho dos dados para economizar banda. Formatos como JPEG, MP3, ZIP, GZIP atuam nessa camada antes de os dados serem transmitidos.
+            </div>
+          </div>
+          <div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#c084fc;margin-bottom:8px">EXEMPLOS PRÁTICOS</div>
+            <table class="compare-table">
+              <tr><th>Tecnologia</th><th>O que faz aqui</th></tr>
+              <tr><td>TLS/SSL</td><td>Criptografa a conexão HTTPS</td></tr>
+              <tr><td>JPEG/PNG</td><td>Compressão de imagens</td></tr>
+              <tr><td>MP3/AAC</td><td>Compressão de áudio</td></tr>
+              <tr><td>ZIP/GZIP</td><td>Compressão de arquivos</td></tr>
+              <tr><td>ASCII/UTF-8</td><td>Codificação de caracteres</td></tr>
+              <tr><td>Base64</td><td>Codificação de binário em texto</td></tr>
+            </table>
+            <div class="highlight-box amber" style="margin-top:10px">
+              <strong>Nota acadêmica:</strong> Na prática do modelo TCP/IP, a camada de Apresentação é absorvida pela camada de Aplicação. No OSI puro ela existe para separar claramente a responsabilidade de "tradução de dados" da "lógica de aplicação".
+            </div>
+          </div>
+        </div>
+      </div>
+      <button class="expand-btn"><span class="arrow">▶</span> ver mais</button>
+    </div>
+ 
+    <!-- Camada 5 -->
+    <div class="card" onclick="toggleCard(this)" style="border-left:3px solid #818cf8;margin-top:12px">
+      <div class="card-header">
+        <div class="card-icon" style="background:rgba(129,140,248,0.12);font-size:16px;font-weight:800;font-family:'JetBrains Mono',monospace;color:#818cf8">5</div>
+        <div style="flex:1">
+          <h3 style="color:#818cf8">Camada de Sessão</h3>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-dim);margin-top:2px">PDU: Dados (Data) &nbsp;|&nbsp; Estabelece, gerencia e encerra sessões</div>
+        </div>
+        <span class="keyword" style="color:#818cf8;border-color:rgba(129,140,248,0.3);background:rgba(129,140,248,0.07)">SESSION</span>
+      </div>
+      <p style="font-size:13px;line-height:1.75;color:var(--text-muted)">
+        Gerencia o <strong style="color:var(--text)">diálogo entre os processos</strong> nas duas extremidades — abre, mantém, sincroniza e encerra sessões de comunicação. Uma sessão é uma conexão lógica entre aplicações, que pode durar horas ou dias, independente das conexões TCP subjacentes.
+      </p>
+      <div class="detail">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:4px">
+          <div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#818cf8;margin-bottom:8px">RESPONSABILIDADES</div>
+            <div class="highlight-box purple">
+              <strong>Estabelecimento de sessão:</strong> Negocia e inicia a comunicação entre duas aplicações. Define parâmetros como autenticação inicial e permissões.
+            </div>
+            <div class="highlight-box purple" style="margin-top:8px">
+              <strong>Manutenção e sincronização:</strong> Insere <strong>pontos de verificação (checkpoints)</strong> no fluxo de dados. Se a transmissão falhar, pode retomar de um checkpoint — não precisa recomeçar do zero. Essencial em transferências longas.
+            </div>
+            <div class="highlight-box purple" style="margin-top:8px">
+              <strong>Encerramento de sessão:</strong> Garante que a sessão seja fechada corretamente (graceful close), liberando recursos. Sem isso, conexões ficariam abertas indefinidamente.
+            </div>
+          </div>
+          <div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#818cf8;margin-bottom:8px">PROTOCOLOS E EXEMPLOS</div>
+            <table class="compare-table">
+              <tr><th>Tecnologia</th><th>Uso na camada 5</th></tr>
+              <tr><td>NetBIOS</td><td>Sessões em redes Windows legado</td></tr>
+              <tr><td>RPC</td><td>Chamada remota de procedimentos</td></tr>
+              <tr><td>PPTP</td><td>Gerencia túneis VPN</td></tr>
+              <tr><td>SIP</td><td>Sessões de VoIP (ligações pela internet)</td></tr>
+              <tr><td>SQL Sessions</td><td>Sessões de banco de dados</td></tr>
+            </table>
+            <div class="highlight-box amber" style="margin-top:10px">
+              <strong>Exemplo real:</strong> Quando você faz login em um banco online, a camada de sessão mantém sua sessão autenticada. Se a conexão cair e você reconectar, a sessão pode ser retomada sem novo login (dependendo da implementação).
+            </div>
+          </div>
+        </div>
+      </div>
+      <button class="expand-btn"><span class="arrow">▶</span> ver mais</button>
+    </div>
+ 
+    <!-- Camada 4 -->
+    <div class="card" onclick="toggleCard(this)" style="border-left:3px solid #38bdf8;margin-top:12px">
+      <div class="card-header">
+        <div class="card-icon" style="background:rgba(56,189,248,0.12);font-size:16px;font-weight:800;font-family:'JetBrains Mono',monospace;color:#38bdf8">4</div>
+        <div style="flex:1">
+          <h3 style="color:#38bdf8">Camada de Transporte</h3>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-dim);margin-top:2px">PDU: Segmento (TCP) / Datagrama (UDP) &nbsp;|&nbsp; Portas, confiabilidade, segmentação</div>
+        </div>
+        <span class="keyword" style="color:#38bdf8;border-color:rgba(56,189,248,0.3);background:rgba(56,189,248,0.07)">TRANSPORT</span>
+      </div>
+      <p style="font-size:13px;line-height:1.75;color:var(--text-muted)">
+        Responsável pela <strong style="color:var(--text)">comunicação ponto a ponto entre processos</strong> (identificados por portas), pela <strong style="color:var(--text)">segmentação dos dados</strong> em pedaços menores e pela <strong style="color:var(--text)">confiabilidade</strong> da entrega. É aqui que vivem os protocolos <strong style="color:var(--text)">TCP e UDP</strong>.
+      </p>
+      <div class="detail">
+        <div style="margin-top:4px">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#38bdf8;margin-bottom:10px">TCP vs UDP — COMPARATIVO COMPLETO</div>
+          <table class="compare-table">
+            <tr><th>Característica</th><th style="color:#34d399">TCP</th><th style="color:#fbbf24">UDP</th></tr>
+            <tr><td>Tipo de conexão</td><td>Orientado à conexão (3-way handshake)</td><td>Sem conexão (connectionless)</td></tr>
+            <tr><td>Confiabilidade</td><td>Entrega garantida com ACK (confirmação)</td><td>Sem garantia — "best effort"</td></tr>
+            <tr><td>Ordenação</td><td>Reordena segmentos fora de ordem</td><td>Pacotes podem chegar fora de ordem</td></tr>
+            <tr><td>Controle de fluxo</td><td>Sim — janela deslizante (sliding window)</td><td>Não</td></tr>
+            <tr><td>Controle de congestionamento</td><td>Sim — reduz taxa em congestionamento</td><td>Não</td></tr>
+            <tr><td>Velocidade</td><td>Mais lento (overhead de controle)</td><td>Mais rápido (menos overhead)</td></tr>
+            <tr><td>Header size</td><td>20-60 bytes</td><td>8 bytes fixos</td></tr>
+            <tr><td>Uso típico</td><td>HTTP, HTTPS, FTP, SMTP, SSH</td><td>DNS, streaming, jogos online, VoIP</td></tr>
+          </table>
+ 
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px">
+            <div>
+              <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#34d399;margin-bottom:8px">TCP — 3-WAY HANDSHAKE</div>
+              <div class="diagram" style="font-size:10px">Cliente          Servidor
+   │                  │
+   │─── SYN ─────────▶│  "quero conectar"
+   │                  │
+   │◀── SYN-ACK ──────│  "ok, pode conectar"
+   │                  │
+   │─── ACK ─────────▶│  "confirmado!"
+   │                  │
+   │═══ DADOS ════════│  conexão estabelecida</div>
+            </div>
+            <div>
+              <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#38bdf8;margin-bottom:8px">PORTAS CONHECIDAS</div>
+              <table class="compare-table">
+                <tr><th>Porta</th><th>Serviço</th></tr>
+                <tr><td>20/21</td><td>FTP</td></tr>
+                <tr><td>22</td><td>SSH</td></tr>
+                <tr><td>25/587</td><td>SMTP</td></tr>
+                <tr><td>53</td><td>DNS</td></tr>
+                <tr><td>80</td><td>HTTP</td></tr>
+                <tr><td>443</td><td>HTTPS</td></tr>
+                <tr><td>3306</td><td>MySQL</td></tr>
+                <tr><td>5432</td><td>PostgreSQL</td></tr>
+              </table>
+            </div>
+          </div>
+ 
+          <div class="highlight-box" style="margin-top:12px">
+            <strong>Segmentação:</strong> A camada de Transporte divide dados grandes em <strong>segmentos</strong> menores para transmissão. Cada segmento tem um número de sequência. No destino, a camada de Transporte os reordena e remonta. Se um segmento se perder, só ele é retransmitido (no TCP).
+          </div>
+          <div class="highlight-box green" style="margin-top:8px">
+            <strong>Por que UDP é mais rápido?</strong> UDP não espera confirmações, não reordena, não controla fluxo. Em streaming de vídeo, é melhor perder um frame do que pausar esperando a retransmissão — por isso YouTube e Netflix usam protocolos sobre UDP (como QUIC).
+          </div>
+        </div>
+      </div>
+      <button class="expand-btn"><span class="arrow">▶</span> ver mais</button>
+    </div>
+ 
+    <!-- Camada 3 -->
+    <div class="card" onclick="toggleCard(this)" style="border-left:3px solid #34d399;margin-top:12px">
+      <div class="card-header">
+        <div class="card-icon" style="background:rgba(52,211,153,0.12);font-size:16px;font-weight:800;font-family:'JetBrains Mono',monospace;color:#34d399">3</div>
+        <div style="flex:1">
+          <h3 style="color:#34d399">Camada de Rede</h3>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-dim);margin-top:2px">PDU: Pacote (Packet) &nbsp;|&nbsp; Endereçamento lógico (IP) e roteamento</div>
+        </div>
+        <span class="keyword" style="color:#34d399;border-color:rgba(52,211,153,0.3);background:rgba(52,211,153,0.07)">NETWORK</span>
+      </div>
+      <p style="font-size:13px;line-height:1.75;color:var(--text-muted)">
+        Responsável pelo <strong style="color:var(--text)">endereçamento lógico</strong> e pelo <strong style="color:var(--text)">roteamento</strong> — decide o melhor caminho para que os pacotes viajem de uma rede de origem até uma rede de destino, atravessando múltiplos roteadores. Opera com <strong style="color:var(--text)">endereços IP</strong>.
+      </p>
+      <div class="detail">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:4px">
+          <div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#34d399;margin-bottom:8px">PROTOCOLOS DA CAMADA 3</div>
+            <table class="compare-table">
+              <tr><th>Protocolo</th><th>Função</th></tr>
+              <tr><td>IPv4</td><td>Endereçamento 32 bits (ex: 192.168.1.1)</td></tr>
+              <tr><td>IPv6</td><td>Endereçamento 128 bits — substituto do IPv4</td></tr>
+              <tr><td>ICMP</td><td>Mensagens de controle e erro (usado pelo ping)</td></tr>
+              <tr><td>ARP</td><td>Resolve IP → MAC (camada 2/3)</td></tr>
+              <tr><td>RARP</td><td>Resolve MAC → IP (legado)</td></tr>
+              <tr><td>OSPF</td><td>Protocolo de roteamento interno (link-state)</td></tr>
+              <tr><td>BGP</td><td>Roteamento entre sistemas autônomos (internet)</td></tr>
+              <tr><td>RIP</td><td>Protocolo de roteamento por vetor de distância</td></tr>
+            </table>
+          </div>
+          <div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#34d399;margin-bottom:8px">ENDEREÇAMENTO IPv4</div>
+            <pre style="font-size:10px"><span class="comment">IP:       192  . 168  .  1   . 100</span>
+<span class="comment">Binário:  11000000.10101000.00000001.01100100</span>
+<span class="comment">Máscara:  255  . 255  . 255 .  0    (/24)</span>
+<span class="comment">Rede:     192.168.1.0</span>
+<span class="comment">Hosts:    192.168.1.1 ~ 192.168.1.254</span>
+<span class="comment">Broadcast:192.168.1.255</span></pre>
+            <div class="highlight-box green" style="margin-top:10px">
+              <strong>Como o roteamento funciona:</strong> Cada roteador tem uma <strong>tabela de roteamento</strong>. Ao receber um pacote, ele lê o IP destino, consulta a tabela e encaminha pela interface correta — de salto em salto (hop by hop) até o destino.
+            </div>
+            <div class="highlight-box amber" style="margin-top:8px">
+              <strong>IPv4 vs IPv6:</strong><br>
+              IPv4: ~4,3 bilhões de endereços (esgotados!)<br>
+              IPv6: 2¹²⁸ ≈ 340 undecilhões de endereços
+            </div>
+          </div>
+        </div>
+        <div class="highlight-box purple" style="margin-top:12px">
+          <strong>ARP — Address Resolution Protocol:</strong> Quando você quer enviar dados para 192.168.1.50, sua máquina sabe o IP mas não sabe o MAC (necessário para Ethernet). O ARP faz um broadcast: "quem tem o IP 192.168.1.50?". O dono responde com seu MAC. Esse mapeamento fica cacheado na tabela ARP local.
+        </div>
+      </div>
+      <button class="expand-btn"><span class="arrow">▶</span> ver mais</button>
+    </div>
+ 
+    <!-- Camada 2 -->
+    <div class="card" onclick="toggleCard(this)" style="border-left:3px solid #fbbf24;margin-top:12px">
+      <div class="card-header">
+        <div class="card-icon" style="background:rgba(251,191,36,0.12);font-size:16px;font-weight:800;font-family:'JetBrains Mono',monospace;color:#fbbf24">2</div>
+        <div style="flex:1">
+          <h3 style="color:#fbbf24">Camada de Enlace de Dados</h3>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-dim);margin-top:2px">PDU: Quadro (Frame) &nbsp;|&nbsp; Endereçamento físico (MAC), controle de acesso ao meio</div>
+        </div>
+        <span class="keyword" style="color:#fbbf24;border-color:rgba(251,191,36,0.3);background:rgba(251,191,36,0.07)">DATA LINK</span>
+      </div>
+      <p style="font-size:13px;line-height:1.75;color:var(--text-muted)">
+        Responsável pela comunicação entre dois dispositivos <strong style="color:var(--text)">diretamente conectados</strong> (mesmo segmento de rede). Usa <strong style="color:var(--text)">endereços MAC</strong> (físicos) para identificar dispositivos na rede local. Detecta e corrige erros de transmissão física. O <strong style="color:var(--text)">Switch</strong> opera aqui.
+      </p>
+      <div class="detail">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:4px">
+          <div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#fbbf24;margin-bottom:8px">DUAS SUBCAMADAS IMPORTANTES</div>
+            <div class="highlight-box amber">
+              <strong>LLC — Logical Link Control:</strong><br>
+              Subcamada superior. Controla o fluxo e gerencia erros entre os frames. Identifica qual protocolo de camada 3 está sendo usado (IPv4, IPv6, ARP). Faz a interface com a camada de Rede.
+            </div>
+            <div class="highlight-box amber" style="margin-top:8px">
+              <strong>MAC — Media Access Control:</strong><br>
+              Subcamada inferior. Controla o acesso ao meio físico compartilhado (quem pode transmitir quando). Define o endereço MAC: 48 bits em hex (ex: AA:BB:CC:DD:EE:FF). Os primeiros 24 bits identificam o fabricante (OUI).
+            </div>
+          </div>
+          <div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#fbbf24;margin-bottom:8px">ESTRUTURA DO FRAME ETHERNET</div>
+            <div class="diagram" style="font-size:9px">┌──────────┬──────────┬──┬──────────────┬───────┐
+│  MAC DST │  MAC SRC │T │    DADOS     │  FCS  │
+│  6 bytes │  6 bytes │2b│ 46-1500 bytes│4 bytes│
+└──────────┴──────────┴──┴──────────────┴───────┘
+MAC DST = endereço MAC destino
+MAC SRC = endereço MAC origem
+T = EtherType (0x0800=IPv4, 0x86DD=IPv6)
+FCS = Frame Check Sequence (detecção de erro)</div>
+            <div class="highlight-box" style="margin-top:10px">
+              <strong>Protocolos:</strong> Ethernet, Wi-Fi (802.11), PPP, HDLC, Frame Relay, ATM
+            </div>
+            <div class="highlight-box amber" style="margin-top:8px">
+              <strong>CSMA/CD (Ethernet cabeada):</strong> Antes de transmitir, escuta o meio. Se colisão detectada, para e aguarda tempo aleatório antes de tentar de novo.
+            </div>
+          </div>
+        </div>
+        <div class="highlight-box green" style="margin-top:12px">
+          <strong>Switch vs Hub nessa camada:</strong> O Hub (camada 1) repete o frame para TODAS as portas — cria um domínio de colisão único. O Switch (camada 2) lê o MAC destino e encaminha o frame APENAS para a porta correta, criando domínios de colisão separados por porta. Resultado: muito mais eficiente e seguro.
+        </div>
+      </div>
+      <button class="expand-btn"><span class="arrow">▶</span> ver mais</button>
+    </div>
+ 
+    <!-- Camada 1 -->
+    <div class="card" onclick="toggleCard(this)" style="border-left:3px solid #f87171;margin-top:12px">
+      <div class="card-header">
+        <div class="card-icon" style="background:rgba(248,113,113,0.12);font-size:16px;font-weight:800;font-family:'JetBrains Mono',monospace;color:#f87171">1</div>
+        <div style="flex:1">
+          <h3 style="color:#f87171">Camada Física</h3>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-dim);margin-top:2px">PDU: Bit &nbsp;|&nbsp; Transmissão de bits pelo meio físico</div>
+        </div>
+        <span class="keyword" style="color:#f87171;border-color:rgba(248,113,113,0.3);background:rgba(248,113,113,0.07)">PHYSICAL</span>
+      </div>
+      <p style="font-size:13px;line-height:1.75;color:var(--text-muted)">
+        A camada mais baixa. Responsável pela <strong style="color:var(--text)">transmissão bruta de bits</strong> pelo meio físico — define voltagens, frequências, conectores, cabos, sinais elétricos, ópticos ou de rádio. Não entende frames, pacotes ou dados — só 0s e 1s.
+      </p>
+      <div class="detail">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:4px">
+          <div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#f87171;margin-bottom:8px">MEIOS DE TRANSMISSÃO</div>
+            <table class="compare-table">
+              <tr><th>Meio</th><th>Características</th></tr>
+              <tr><td>Par trançado (UTP/STP)</td><td>Cabo de rede RJ-45, Cat5e/Cat6, até 10Gbps</td></tr>
+              <tr><td>Cabo coaxial</td><td>TV a cabo, legado Ethernet (10BASE-2)</td></tr>
+              <tr><td>Fibra óptica</td><td>Luz (laser/LED), altíssima velocidade, imune a EM</td></tr>
+              <tr><td>Wi-Fi (802.11)</td><td>Ondas de rádio 2.4GHz / 5GHz / 6GHz</td></tr>
+              <tr><td>Bluetooth</td><td>Rádio de curto alcance 2.4GHz</td></tr>
+              <tr><td>Infravermelho</td><td>Linha de visada, curto alcance (controle remoto)</td></tr>
+            </table>
+          </div>
+          <div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#f87171;margin-bottom:8px">CONCEITOS TÉCNICOS</div>
+            <div class="highlight-box" style="margin-bottom:8px">
+              <strong>Banda larga vs Banda base:</strong><br>
+              Banda base: sinal digital direto no cabo (Ethernet)<br>
+              Banda larga: múltiplos canais por modulação (DSL, cabo)
+            </div>
+            <div class="highlight-box" style="margin-bottom:8px">
+              <strong>Modulação:</strong> Técnica de codificar bits em sinal analógico. AM, FM, PSK, QAM. O modem (MOdulador/DEModulador) opera aqui.
+            </div>
+            <div class="highlight-box amber">
+              <strong>Multiplexação:</strong><br>
+              FDM — divide por frequência<br>
+              TDM — divide por time slot<br>
+              WDM — divide por comprimento de onda (fibra)
+            </div>
+          </div>
+        </div>
+        <div class="highlight-box" style="margin-top:12px">
+          <strong>Dispositivos da camada 1:</strong> Hub, Repetidor, Modem, Cabo de rede, Conectores RJ-45, Transceiver. Todos eles apenas amplificam ou repetem o sinal elétrico/óptico sem interpretar o conteúdo.
+        </div>
+      </div>
+      <button class="expand-btn"><span class="arrow">▶</span> ver mais</button>
+    </div>
+ 
+    <!-- Encapsulamento visual -->
+    <div class="card" style="cursor:default;margin-top:24px">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent);margin-bottom:16px;letter-spacing:0.08em">ENCAPSULAMENTO — FLUXO COMPLETO DE DADOS</div>
+      <div style="display:grid;grid-template-columns:1fr 60px 1fr;gap:0;align-items:center">
+        <div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-dim);margin-bottom:8px;text-align:center">EMISSOR (descendo as camadas)</div>
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <div style="background:rgba(244,114,182,0.1);border:1px solid rgba(244,114,182,0.3);border-radius:6px;padding:8px 12px;font-size:12px;display:flex;justify-content:space-between;align-items:center"><span style="color:#f472b6;font-weight:700">7 Aplicação</span><span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-muted)">Dados</span></div>
+            <div style="background:rgba(192,132,252,0.1);border:1px solid rgba(192,132,252,0.3);border-radius:6px;padding:8px 12px;font-size:12px;display:flex;justify-content:space-between;align-items:center"><span style="color:#c084fc;font-weight:700">6 Apresentação</span><span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-muted)">Dados</span></div>
+            <div style="background:rgba(129,140,248,0.1);border:1px solid rgba(129,140,248,0.3);border-radius:6px;padding:8px 12px;font-size:12px;display:flex;justify-content:space-between;align-items:center"><span style="color:#818cf8;font-weight:700">5 Sessão</span><span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-muted)">Dados</span></div>
+            <div style="background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.3);border-radius:6px;padding:8px 12px;font-size:12px;display:flex;justify-content:space-between;align-items:center"><span style="color:#38bdf8;font-weight:700">4 Transporte</span><span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-muted)">[TCP hdr] + Dados → Segmento</span></div>
+            <div style="background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.3);border-radius:6px;padding:8px 12px;font-size:12px;display:flex;justify-content:space-between;align-items:center"><span style="color:#34d399;font-weight:700">3 Rede</span><span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-muted)">[IP hdr] + Segmento → Pacote</span></div>
+            <div style="background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.3);border-radius:6px;padding:8px 12px;font-size:12px;display:flex;justify-content:space-between;align-items:center"><span style="color:#fbbf24;font-weight:700">2 Enlace</span><span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-muted)">[MAC hdr] + Pacote + [FCS] → Frame</span></div>
+            <div style="background:rgba(248,113,113,0.1);border:1px solid rgba(248,113,113,0.3);border-radius:6px;padding:8px 12px;font-size:12px;display:flex;justify-content:space-between;align-items:center"><span style="color:#f87171;font-weight:700">1 Física</span><span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-muted)">010110100101... (bits)</span></div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;font-size:24px;color:var(--accent)">
+          <span style="color:var(--text-dim);font-size:28px">⇌</span>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--text-dim);text-align:center;line-height:1.4">meio físico</span>
+        </div>
+        <div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-dim);margin-bottom:8px;text-align:center">RECEPTOR (subindo as camadas)</div>
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <div style="background:rgba(244,114,182,0.1);border:1px solid rgba(244,114,182,0.3);border-radius:6px;padding:8px 12px;font-size:12px;display:flex;justify-content:space-between;align-items:center"><span style="color:#f472b6;font-weight:700">7 Aplicação</span><span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-muted)">Dados ← entregues</span></div>
+            <div style="background:rgba(192,132,252,0.1);border:1px solid rgba(192,132,252,0.3);border-radius:6px;padding:8px 12px;font-size:12px;display:flex;justify-content:space-between;align-items:center"><span style="color:#c084fc;font-weight:700">6 Apresentação</span><span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-muted)">Decriptografa/descomprime</span></div>
+            <div style="background:rgba(129,140,248,0.1);border:1px solid rgba(129,140,248,0.3);border-radius:6px;padding:8px 12px;font-size:12px;display:flex;justify-content:space-between;align-items:center"><span style="color:#818cf8;font-weight:700">5 Sessão</span><span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-muted)">Gerencia sessão</span></div>
+            <div style="background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.3);border-radius:6px;padding:8px 12px;font-size:12px;display:flex;justify-content:space-between;align-items:center"><span style="color:#38bdf8;font-weight:700">4 Transporte</span><span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-muted)">Remove TCP hdr, reordena</span></div>
+            <div style="background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.3);border-radius:6px;padding:8px 12px;font-size:12px;display:flex;justify-content:space-between;align-items:center"><span style="color:#34d399;font-weight:700">3 Rede</span><span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-muted)">Remove IP hdr, verifica destino</span></div>
+            <div style="background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.3);border-radius:6px;padding:8px 12px;font-size:12px;display:flex;justify-content:space-between;align-items:center"><span style="color:#fbbf24;font-weight:700">2 Enlace</span><span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-muted)">Remove MAC hdr, verifica FCS</span></div>
+            <div style="background:rgba(248,113,113,0.1);border:1px solid rgba(248,113,113,0.3);border-radius:6px;padding:8px 12px;font-size:12px;display:flex;justify-content:space-between;align-items:center"><span style="color:#f87171;font-weight:700">1 Física</span><span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-muted)">Converte sinal → bits</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+ 
+  </section>
+ 
  
   <!--  QUIZ SIMPLES E SEM FIRULA, QUANDO ERRA NÃO MOSTRA A CORRETA PRA NÃO ROUBARRR-->
   <section id="quiz" class="fade-in">
@@ -1529,7 +2002,7 @@ Nível 0 — Lógica Digital (portas lógicas, transistores)</div>
  
 <footer>
   boa prova pra nós <br>
-  <strong>lembrem-se:</strong> entendam o <em>porquê</em> de cada conceito, não só a definição. <br> revisão M1 — S.O. &amp; Redes 2026 <br> por Karina Pagnani e suas amigas IA's
+  <strong>lembrem-se:</strong> entendam o <em>porquê</em> de cada conceito, não só a definição. <br> por Karina Pagnani
 </footer>
  
 <script>
